@@ -67,7 +67,7 @@ vi cp-values.yaml
 
 ## Deploy Kong Control Plane
 ```bash
-helm install -f cp-values.yaml kong kong/kong -n kong \
+helm install -f cp-minimal.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$ADMIN_HOSTNAME \
 --set manager.ingress.hostname=$MANAGER_HOSTNAME \
 --set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME
@@ -81,6 +81,11 @@ watch "kubectl get pods -n kong"
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"30001-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 ```
 
+## Configure Portal Host Name
+```bash
+kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
+```
+
 ## Edit Helm Values If Needed
 ```bash
 vi dp-values.yaml
@@ -91,7 +96,7 @@ vi dp-values.yaml
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-
+helm install -f dp-minimal.yaml kong-dp kong/kong -n kong-dp
 ```
 
 ## Remove Helm Releases

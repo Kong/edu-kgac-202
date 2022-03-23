@@ -55,8 +55,10 @@ postgresql:
   postgresqlDatabase: kong
   postgresqlPassword: kong
 portal:
+  enabled: true
   http:
     enabled: false
+    nodePort: 30004
   type: NodePort
 portalapi:
   enabled: false
