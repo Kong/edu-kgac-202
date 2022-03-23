@@ -222,7 +222,7 @@ cluster:
 # Specify Kong proxy service configuration
 proxy:
   # Enable creating a Kubernetes service for the proxy
-  enabled: true
+  enabled: false
   type: NodePort
   # To specify annotations or labels for the proxy service, add them to the respective
   # "annotations" or "labels" dictionaries below.
