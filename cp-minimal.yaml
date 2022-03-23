@@ -65,8 +65,8 @@ portal:
   #   parameters:
   #     - http2
   type: NodePort
-  ingress: 
-    enabled: true
+  # ingress: 
+  #   enabled: true
 portalapi:
   enabled: false
   http:
