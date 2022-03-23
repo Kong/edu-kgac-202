@@ -62,6 +62,8 @@ portal:
   tls:
     enabled: true
     nodePort: 30004
+    parameters:
+      - http2
   type: NodePort
   ingress: 
     enabled: true
