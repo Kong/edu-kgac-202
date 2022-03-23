@@ -1,0 +1,34 @@
+ingressController:
+  enabled: false
+image:
+  repository: kong/kong-gateway
+  tag: "2.6.0.2-alpine"
+env:
+  database: "off"
+  role: "data_plane"
+  cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
+  cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
+  status_listen: 0.0.0.0:8100
+  lua_ssl_trusted_certificate: "/etc/secrets/kong-cluster-cert/tls.crt"
+  cluster_control_plane: "kong-kong-cluster.kong.svc.cluster.local:8005"
+  cluster_telemetry_endpoint: kong-kong-clustertelemetry.kong.svc.cluster.local:8006
+proxy:
+  enabled: true
+  type: NodePort
+enterprise:
+  enabled: false
+  rbac:
+    enabled: false
+  smtp:
+    enabled: false
+  license_secret: kong-enterprise-license
+  portal:
+    enabled: false
+manager:
+  enabled: false
+secretVolumes:
+  - kong-cluster-cert
+portal:
+  enabled: false
+portalapi:
+  enabled: false
