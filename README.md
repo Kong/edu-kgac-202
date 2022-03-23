@@ -35,7 +35,7 @@ kubectl create secret generic kong-enterprise-license -n kong --from-file=licens
 
 ## Create Manager Config
 ```bash
-cat << EOF > admin_gui.session_conf
+cat << EOF > admin_gui_session_conf
 {
     "cookie_name":"admin_session",
     "cookie_samesite":"off",
@@ -44,7 +44,7 @@ cat << EOF > admin_gui.session_conf
     "storage":"kong"
 }
 EOF
-kubectl create secret generic kong-session-config -n kong --from-file=admin_gui.session_conf
+kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_session_conf
 ```
 
 ## Add Helm Repo
@@ -71,6 +71,9 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$ADMIN_HOSTNAME \
 --set manager.ingress.hostname=$MANAGER_HOSTNAME \
 --set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME
+
+# Watch Pods
+watch "kubectl get pods -n kong"
 ```
 
 ## Point Manager to Dataplane Endpoint
@@ -89,4 +92,12 @@ kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 
+```
+
+## Remove Helm Releases
+```bash
+# Remove DP
+helm uninstall kong-dp -n kong-dp
+# Remove CP
+helm uninstall kong -n kong
 ```

@@ -74,16 +74,16 @@ env:
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
   portal_gui_protocol: "http"
-  nginx_worker_processes: "2"
-  proxy_access_log: /dev/stdout
-  admin_access_log: /dev/stdout
-  admin_gui_access_log: /dev/stdout
-  portal_api_access_log: /dev/stdout
-  proxy_error_log: /dev/stderr
-  admin_error_log: /dev/stderr
-  admin_gui_error_log: /dev/stderr
-  portal_api_error_log: /dev/stderr
-  prefix: /kong/
+  # nginx_worker_processes: "2"
+  # proxy_access_log: /dev/stdout
+  # admin_access_log: /dev/stdout
+  # admin_gui_access_log: /dev/stdout
+  # portal_api_access_log: /dev/stdout
+  # proxy_error_log: /dev/stderr
+  # admin_error_log: /dev/stderr
+  # admin_gui_error_log: /dev/stderr
+  # portal_api_error_log: /dev/stderr
+  # prefix: /kong/
 
 # This section is any customer specific environments variables that doesn't require KONG_ prefix.
 # These custom environment variables are typicall used in custom plugins or serverless plugins to
