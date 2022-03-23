@@ -60,6 +60,8 @@ portal:
     enabled: true
     nodePort: 30004
   type: NodePort
+  ingress: 
+    enabled: true
 portalapi:
   enabled: false
   http:
