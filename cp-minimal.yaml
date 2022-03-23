@@ -57,7 +57,7 @@ postgresql:
 portal:
   enabled: true
   http:
-    enabled: false
+    enabled: true
     nodePort: 30004
   type: NodePort
 portalapi:
