@@ -67,6 +67,6 @@ kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-helm install -f dp-minimal.yaml kong-dp kong/kong -n kong-dp
+helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp
 
 echo "https://$MANAGER_HOSTNAME"
