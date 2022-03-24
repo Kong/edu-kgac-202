@@ -77,11 +77,11 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 # Point Manager to Dataplane Endpoint
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"30001-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 
-# Point Manager to Dataplane Endpoint
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"30001-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
-
 # Configure Portal Host Name
-# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
+kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
+
+## Configure Portal Host Protocol
+# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
 
 # Watch Pods
 watch "kubectl get pods -n kong"
