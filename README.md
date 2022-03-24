@@ -86,6 +86,11 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"s
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 ```
 
+## Configure Portal Host Protocol
+```bash
+kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
+```
+
 ## Edit Helm Values If Needed
 ```bash
 vi dp-values.yaml
