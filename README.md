@@ -80,16 +80,9 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"s
 # Configure Portal Host Name
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 
-## Configure Portal Host Protocol
-# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
-
-# Watch Pods
-watch "kubectl get pods -n kong"
-```
-
-## Configure Portal Host Protocol
-```bash
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
+# Wait for Kong CP Pods
+WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
+kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
 ```
 
 ## Edit Helm Values If Needed
@@ -102,7 +95,7 @@ vi dp-values.yaml
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-helm install -f dp-minimal.yaml kong-dp kong/kong -n kong-dp
+helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp
 ```
 
 ## Remove Helm Releases

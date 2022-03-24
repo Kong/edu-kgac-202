@@ -56,9 +56,6 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"s
 # Configure Portal Host Name
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 
-## Configure Portal Host Protocol
-# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
-
 # Wait for Kong CP Pods
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
 kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
