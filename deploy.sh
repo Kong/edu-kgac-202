@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
 
-# Set alias and download kubeconfig
-alias k=kubectl
-./setup-k8s.sh
-
-# Install Helm
-curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
-tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
-export PATH=$PATH:$HOME/linux-amd64
-
-# Clone Repo
-git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
-cd kong-course-gateway-ops-for-kubernetes
-
 # Create Keys and Certs, Namespace, and Load into K8s
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
