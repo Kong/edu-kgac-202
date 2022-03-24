@@ -1,41 +1,29 @@
-# Kong Course - Gateway Ops for Kubernetes
-Scripts and configs for the Gateway Ops for Kubernetes Course
+#!/usr/bin/env bash
 
-## Pull Kubeconfig
-```bash
+# Set alias and download kubeconfig
 alias k=kubectl
 ./setup-k8s.sh
-```
 
-## Install Helm
-```bash
+# Install Helm
 curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
 tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
 export PATH=$PATH:$HOME/linux-amd64
-```
 
-## Clone Repo
-```bash
+# Clone Repo
 git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
 cd kong-course-gateway-ops-for-kubernetes
-```
 
-## Create Keys and Certs, Namespace, and Load into K8s
-```bash
+# Create Keys and Certs, Namespace, and Load into K8s
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
   -days 1095 -subj "/CN=kong_clustering"
 kubectl create namespace kong
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong
-```
 
-## Load License
-```bash
+# Load License
 kubectl create secret generic kong-enterprise-license -n kong --from-file=license=/etc/kong/license.json
-```
 
-## Create Manager Config
-```bash
+# Create Manager Config
 cat << EOF > admin_gui_session_conf
 {
     "cookie_name":"admin_session",
@@ -46,28 +34,16 @@ cat << EOF > admin_gui_session_conf
 }
 EOF
 kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_session_conf
-```
 
-## Add Helm Repo
-```bash
+# Add Helm Repo
 helm repo add kong https://charts.konghq.com
 helm repo update
-```
 
-## Export Hostnames
-```bash
+# Export Hostnames
 export MANAGER_HOSTNAME="31112-1-$AVL_DEPLOY_ID.labs.konghq.com"
 export ADMIN_HOSTNAME="30001-1-$AVL_DEPLOY_ID.labs.konghq.com"
 export DEV_PORTAL_HOSTNAME="30004-1-$AVL_DEPLOY_ID.labs.konghq.com"
-```
 
-## Edit Helm Values If Needed
-```bash
-vi cp-values.yaml
-```
-
-## Deploy Kong Control Plane and Patch K8s Resources
-```bash
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$ADMIN_HOSTNAME \
@@ -83,32 +59,14 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"s
 # Configure Portal Host Name
 # kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"30004-1-$AVL_DEPLOY_ID.labs.konghq.com\" }]}]}}}}"
 
-# Watch Pods
-watch "kubectl get pods -n kong"
-```
+# Wait for Kong CP Pods
+WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
+kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
 
-## Configure Portal Host Protocol
-```bash
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_PROTOCOL\", \"value\": \"https\" }]}]}}}}"
-```
-
-## Edit Helm Values If Needed
-```bash
-vi dp-values.yaml
-```
-
-## Deploy Kong Data Plane
-```bash
+# Deploy Kong Data Plane
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 helm install -f dp-minimal.yaml kong-dp kong/kong -n kong-dp
-```
 
-## Remove Helm Releases
-```bash
-# Remove DP
-helm uninstall kong-dp -n kong-dp
-# Remove CP
-helm uninstall kong -n kong
-```
+echo "https://$MANAGER_HOSTNAME"
