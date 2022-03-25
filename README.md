@@ -22,6 +22,7 @@ cd kong-course-gateway-ops-for-kubernetes
 
 ## Create Keys and Certs, Namespace, and Load into K8s
 ```bash
+openssl rand -writerand .rnd
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
   -days 1095 -subj "/CN=kong_clustering"
