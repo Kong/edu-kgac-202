@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
+# Pull kubeconfig
+cd $HOME
+alias k=kubectl
+./setup-k8s.sh
+
+# Install Helm
+curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
+tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
+export PATH=$PATH:$HOME/linux-amd64
+
 # Create Keys and Certs, Namespace, and Load into K8s
+cd $HOME/kong-course-gateway-ops-for-kubernetes
 openssl rand -writerand .rnd
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
@@ -22,6 +33,18 @@ cat << EOF > admin_gui_session_conf
 }
 EOF
 kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_session_conf
+
+# Create Portal Config
+cat << EOF > portal_gui_session_conf
+{
+    "cookie_name":"portal_session",
+    "cookie_samesite":"off",
+    "secret":"kong",
+    "cookie_secure":false,
+    "storage":"kong"
+}
+EOF
+kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_gui_session_conf
 
 # Add Helm Repo
 helm repo add kong https://charts.konghq.com

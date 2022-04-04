@@ -13,6 +13,12 @@ env:
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
   portal_gui_protocol: "https"
+  portal_auth: basic-auth
+  portal_session_conf:
+    valueFrom:
+      secretKeyRef:
+        name: kong-portal-session-config
+        key: portal_session_conf
 cluster:
   enabled: true
   tls:
