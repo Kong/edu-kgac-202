@@ -44,7 +44,7 @@ cat << EOF > portal_gui_session_conf
     "storage":"kong"
 }
 EOF
-kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_gui_session_conf
+kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf
 
 # Add Helm Repo
 helm repo add kong https://charts.konghq.com
