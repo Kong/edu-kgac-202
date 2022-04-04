@@ -49,6 +49,21 @@ EOF
 kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_session_conf
 ```
 
+## Create Portal Config
+```bash
+# Create Portal Config
+cat << EOF > portal_gui_session_conf
+{
+    "cookie_name":"portal_session",
+    "cookie_samesite":"off",
+    "secret":"kong",
+    "cookie_secure":false,
+    "storage":"kong"
+}
+EOF
+kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf
+```
+
 ## Add Helm Repo
 ```bash
 helm repo add kong https://charts.konghq.com

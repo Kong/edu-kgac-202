@@ -33,12 +33,15 @@ clustertelemetry:
     containerPort: 8006
 proxy:
   enabled: true
+  type: NodePort
+  http:
+    enabled: true
+    nodePort: 30001
 admin:
   enabled: true
   type: NodePort
   http:
     enabled: true
-    nodePort: 30001
 enterprise:
   enabled: true
   rbac:

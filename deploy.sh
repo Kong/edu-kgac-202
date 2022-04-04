@@ -52,14 +52,16 @@ helm repo update
 
 # Export Hostnames
 export MANAGER_HOSTNAME="31112-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export ADMIN_HOSTNAME="30001-1-$AVL_DEPLOY_ID.labs.konghq.com"
+export PROXY_HOSTNAME="30001-1-$AVL_DEPLOY_ID.labs.konghq.com"
 export DEV_PORTAL_HOSTNAME="30004-1-$AVL_DEPLOY_ID.labs.konghq.com"
+export ADMIN_HOSTNAME=`kubectl get nodes -o jsonpath='{.items[0].metadata.name}'`
 
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
---set admin.ingress.hostname=$ADMIN_HOSTNAME \
+--set proxy.ingress.hostname=$PROXY_HOSTNAME \
 --set manager.ingress.hostname=$MANAGER_HOSTNAME \
---set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME
+--set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME \ 
+--set admin.ingress.hostname=$ADMIN_HOSTNAME
 
 # Point Manager to Dataplane Endpoint
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$ADMIN_HOSTNAME\" }]}]}}}}"
