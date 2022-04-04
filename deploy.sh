@@ -60,7 +60,7 @@ export ADMIN_HOSTNAME=`kubectl get nodes -o jsonpath='{.items[0].metadata.name}'
 helm install -f cp-values.yaml kong kong/kong -n kong \
 --set proxy.ingress.hostname=$PROXY_HOSTNAME \
 --set manager.ingress.hostname=$MANAGER_HOSTNAME \
---set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME \ 
+--set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME \
 --set admin.ingress.hostname=$ADMIN_HOSTNAME
 
 # Point Manager to Dataplane Endpoint
