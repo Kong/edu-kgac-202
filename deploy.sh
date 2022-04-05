@@ -50,24 +50,16 @@ kubectl create secret generic kong-portal-session-config -n kong --from-file=por
 helm repo add kong https://charts.konghq.com
 helm repo update
 
-# Export Hostnames
-export MANAGER_HOSTNAME="31112-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export PROXY_HOSTNAME="30001-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export DEV_PORTAL_HOSTNAME="30004-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export ADMIN_HOSTNAME=`kubectl get nodes -o jsonpath='{.items[0].metadata.name}'`
-
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
---set proxy.ingress.hostname=$PROXY_HOSTNAME \
---set manager.ingress.hostname=$MANAGER_HOSTNAME \
---set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME \
---set admin.ingress.hostname=$ADMIN_HOSTNAME
+--set proxy.ingress.hostname=$KONG_PROXY_URI \
+--set manager.ingress.hostname=$KONG_MANAGER_URI \
+--set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
+--set admin.ingress.hostname=$KONG_ADMIN_API_URI \
+--set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
 
 # Point Manager to Dataplane Endpoint
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$ADMIN_HOSTNAME\" }]}]}}}}"
-
-# Configure Portal Host Name
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"$DEV_PORTAL_HOSTNAME\" }]}]}}}}"
+kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$KONG_ADMIN_API_URI\" }]}]}}}}"
 
 # Wait for Kong CP Pods
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
