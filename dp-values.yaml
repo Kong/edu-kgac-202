@@ -17,8 +17,7 @@ proxy:
     enabled: true
     nodePort: 30000
   tls:
-    enabled: true
-    nodePort: 31000
+    enabled: false
   type: NodePort
   ingress: 
     enabled: true
