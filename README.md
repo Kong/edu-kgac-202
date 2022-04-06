@@ -9,8 +9,8 @@ alias k=kubectl
 
 ## Install Helm
 ```bash
-curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
-tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
+# curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
+# tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
 export PATH=$PATH:$HOME/linux-amd64
 ```
 
@@ -68,13 +68,6 @@ kubectl create secret generic kong-portal-session-config -n kong --from-file=por
 ```bash
 helm repo add kong https://charts.konghq.com
 helm repo update
-```
-
-## Export Hostnames
-```bash
-export MANAGER_HOSTNAME="31112-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export ADMIN_HOSTNAME="30001-1-$AVL_DEPLOY_ID.labs.konghq.com"
-export DEV_PORTAL_HOSTNAME="30004-1-$AVL_DEPLOY_ID.labs.konghq.com"
 ```
 
 ## Edit Helm Values If Needed

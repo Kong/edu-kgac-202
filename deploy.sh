@@ -6,8 +6,8 @@ alias k=kubectl
 ./setup-k8s.sh
 
 # Install Helm
-curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
-tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
+# curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
+# tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
 export PATH=$PATH:/home/labuser/linux-amd64
 
 # Create Keys and Certs, Namespace, and Load into K8s

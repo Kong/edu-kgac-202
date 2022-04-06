@@ -13,8 +13,12 @@ env:
   cluster_control_plane: "kong-kong-cluster.kong.svc.cluster.local:8005"
   cluster_telemetry_endpoint: kong-kong-clustertelemetry.kong.svc.cluster.local:8006
 proxy:
-  enabled: true
+  http:
+    enabled: true
+    nodePort: 30003
   type: NodePort
+  ingress: 
+    enabled: true
 enterprise:
   enabled: false
   rbac:
