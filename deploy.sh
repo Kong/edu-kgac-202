@@ -52,7 +52,6 @@ helm repo update
 
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
---set proxy.ingress.hostname=$KONG_PROXY_URI \
 --set manager.ingress.hostname=$KONG_MANAGER_URI \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
@@ -69,6 +68,8 @@ kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp
+helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
+--set proxy.ingress.hostname=$KONG_PROXY_URI
 
-echo "https://$MANAGER_HOSTNAME"
+
+echo "https://$KONG_MANAGER_URI"
