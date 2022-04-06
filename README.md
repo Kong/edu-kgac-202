@@ -79,15 +79,13 @@ vi cp-values.yaml
 ```bash
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
---set admin.ingress.hostname=$ADMIN_HOSTNAME \
---set manager.ingress.hostname=$MANAGER_HOSTNAME \
---set portal.ingress.hostname=$DEV_PORTAL_HOSTNAME
+--set manager.ingress.hostname=$KONG_MANAGER_URI \
+--set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
+--set admin.ingress.hostname=$KONG_ADMIN_API_URI \
+--set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
 
-# Point Manager to Dataplane Endpoint
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$ADMIN_HOSTNAME\" }]}]}}}}"
-
-# Configure Portal Host Name
-kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"$DEV_PORTAL_HOSTNAME\" }]}]}}}}"
+# Update Deployment Environment Variables
+kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$KONG_ADMIN_API_URI\" },{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"$KONG_PORTAL_GUI_HOST\" },{ \"name\" : \"KONG_PORTAL_API_URL\", \"value\": \"https://$KONG_PORTAL_API_URI\" }]}]}}}}"
 
 # Wait for Kong CP Pods
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
@@ -101,10 +99,12 @@ vi dp-values.yaml
 
 ## Deploy Kong Data Plane
 ```bash
+# Deploy Kong Data Plane
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp
+helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
+--set proxy.ingress.hostname=$KONG_PROXY_URI
 ```
 
 ## Remove Helm Releases
