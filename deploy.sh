@@ -40,7 +40,8 @@ cat << EOF > portal_gui_session_conf
     "cookie_name":"portal_session",
     "cookie_samesite":"off",
     "secret":"kong",
-    "cookie_secure":false,
+    "cookie_secure":true,
+    "cookie_domain":".labs.konghq.com",
     "storage":"kong"
 }
 EOF
