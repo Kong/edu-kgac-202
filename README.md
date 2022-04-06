@@ -9,8 +9,8 @@ alias k=kubectl
 
 ## Install Helm
 ```bash
-# curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
-# tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
+curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
+tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
 export PATH=$PATH:$HOME/linux-amd64
 ```
 
