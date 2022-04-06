@@ -37,12 +37,18 @@ proxy:
   http:
     enabled: true
     nodePort: 30000
+  tls:
+    enabled: true
+    nodePort: 31000
 admin:
   enabled: true
   type: NodePort
   http:
     enabled: true
     nodePort: 30001
+  tls:
+    enabled: true
+    nodePort: 31001
 enterprise:
   enabled: true
   rbac:
@@ -57,6 +63,9 @@ manager:
   type: NodePort
   http:
     nodePort: 30002
+  tls:
+    enabled: true
+    nodePort: 31002
 secretVolumes:
   - kong-cluster-cert
 postgresql:
@@ -72,6 +81,9 @@ portalapi:
   http:
     enabled: true
     nodePort: 30004
+  tls:
+    enabled: true
+    nodePort: 31004
   type: NodePort
   ingress: 
     enabled: true
