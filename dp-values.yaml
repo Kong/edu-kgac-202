@@ -15,10 +15,10 @@ env:
 proxy:
   http:
     enabled: true
-    nodePort: 30003
+    nodePort: 30000
   tls:
     enabled: true
-    nodePort: 31003
+    nodePort: 31000
   type: NodePort
   ingress: 
     enabled: true

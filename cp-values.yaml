@@ -36,10 +36,10 @@ proxy:
   type: NodePort
   http:
     enabled: true
-    nodePort: 30000
+    nodePort: 32000
   tls:
     enabled: true
-    nodePort: 31000
+    nodePort: 32000
 admin:
   enabled: true
   type: NodePort
@@ -76,6 +76,11 @@ postgresql:
 portal:
   enabled: true
   type: NodePort
+  http:
+    nodePort: 30003
+  tls:
+    enabled: true
+    nodePort: 31003
 portalapi:
   enabled: true
   http:
