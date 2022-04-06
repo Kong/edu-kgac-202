@@ -39,7 +39,7 @@ proxy:
     nodePort: 32000
   tls:
     enabled: true
-    nodePort: 32000
+    nodePort: 33000
 admin:
   enabled: true
   type: NodePort
