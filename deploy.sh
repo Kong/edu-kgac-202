@@ -57,9 +57,40 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
+helm upgrade --install --set persistence.enabled=false --set config.general.ALLOWED_SENDER_DOMAINS=example.com mail bokysan/mail
 
 # Update Deployment Environment Variables
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$KONG_ADMIN_API_URI\" },{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"$KONG_PORTAL_GUI_HOST\" },{ \"name\" : \"KONG_PORTAL_API_URL\", \"value\": \"https://$KONG_PORTAL_API_URI\" }]}]}}}}"
+# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [\
+# {\"name\": \"KONG_SMTP_HOST\", \"value\": \"smtp.gmail.com\"},\
+# {\"name\": \"KONG_SMTP_PORT\", \"value\": \"587\"},\
+# {\"name\": \"KONG_SMTP_AUTH_TYPE\", \"value\":\"plain\"},\
+# {\"name\":\"KONG_SMTP_STARTTLS\",\"value\":\"on\"},\
+# {\"name\":\"KONG_SMTP_USERNAME\",\"value\":\"kongemailtest@gmail.com\"},\
+# {\"name\":\"KONG_SMTP_PASSWORD\",\"value\":\"jNzjktweewwYiQdpd2jymXV\"},\
+# {\"name\":\"KONG_SMTP_ADMIN_EMAILS\",\"value\":\"noreply@konghq.com\"}\
+# ]}]}}}}"
+
+#       KONG_SMTP_HOST: smtp.gmail.com
+#       KONG_SMTP_PORT: 587
+#       KONG_SMTP_AUTH_TYPE: plain
+#       KONG_SMTP_STARTTLS: "on"
+#       KONG_SMTP_USERNAME: kongemailtest@gmail.com
+#       KONG_SMTP_PASSWORD: jNzjktweewwYiQdpd2jymXV
+#       KONG_SMTP_ADMIN_EMAILS: noreply@konghq.com
+
+# kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [\
+# {\"name\": \"KONG_SMTP_MOCK\", \"value\": \"off\"},\
+# {\"name\": \"KONG_SMTP_ADMIN_EMAILS\", \"value\": \"kong@labs.konghq.com\"},\
+# {\"name\": \"KONG_SMTP_HOST\", \"value\": \"mail\"},\
+# {\"name\": \"KONG_SMTP_PORT\", \"value\":\"587\"},\
+# {\"name\":\"KONG_SMTP_DOMAIN\",\"value\":\"labs.konghq.com\"},\
+# {\"name\":\"KONG_PORTAL_EMAIL_VERIFICATION\",\"value\":\"off\"},\
+# {\"name\":\"KONG_PORTAL_EMAILS_FROM\",\"value\":\"kong@labs.konghq.com\"},\
+# {\"name\":\"KONG_PORTAL_EMAILS_REPLY_TO\",\"value\":\"kong@labs.konghq.com\"},\
+# {\"name\":\"KONG_ADMIN_EMAILS_FROM\",\"value\":\"kong@labs.konghq.com\"},\
+# {\"name\":\"KONG_ADMIN_EMAILS_REPLY_TO\",\"value\":\"kong@labs.konghq.com\"}\
+# ]}]}}}}"
 
 # Wait for Kong CP Pods
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`

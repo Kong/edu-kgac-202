@@ -8,8 +8,8 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 1080
-    targetPort: 1080
+    port: 1025
+    targetPort: 1025
   selector:
     app: smtp-server
   type: ClusterIP
@@ -36,4 +36,4 @@ spec:
         image: reachfive/fake-smtp-server
         ports:
         - name: smtp
-          containerPort: 1080
+          containerPort: 1025
