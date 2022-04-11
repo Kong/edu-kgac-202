@@ -57,7 +57,6 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
-helm upgrade --install --set persistence.enabled=false --set config.general.ALLOWED_SENDER_DOMAINS=example.com mail bokysan/mail
 
 # Update Deployment Environment Variables
 kubectl patch deployment kong-kong -n kong -p "{\"spec\": { \"template\" : { \"spec\" : {\"containers\":[{\"name\":\"proxy\",\"env\": [{ \"name\" : \"KONG_ADMIN_API_URI\", \"value\": \"$KONG_ADMIN_API_URI\" },{ \"name\" : \"KONG_PORTAL_GUI_HOST\", \"value\": \"$KONG_PORTAL_GUI_HOST\" },{ \"name\" : \"KONG_PORTAL_API_URL\", \"value\": \"https://$KONG_PORTAL_API_URI\" }]}]}}}}"
