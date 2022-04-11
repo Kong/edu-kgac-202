@@ -51,7 +51,6 @@ kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_
 
 ## Create Portal Config
 ```bash
-# Create Portal Config
 cat << EOF > portal_gui_session_conf
 {
     "cookie_name":"portal_session",
@@ -108,10 +107,12 @@ helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=$KONG_PROXY_URI
 ```
 
-## Remove Helm Releases
+## Remove Helm Releases and Delete Namespaces
 ```bash
 # Remove DP
 helm uninstall kong-dp -n kong-dp
+kubectl delete ns kong-dp
 # Remove CP
 helm uninstall kong -n kong
+kubectl delete ns kong
 ```
