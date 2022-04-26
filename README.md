@@ -1,6 +1,16 @@
 # Kong Course - Gateway Ops for Kubernetes
 Scripts and configs for the Gateway Ops for Kubernetes Course
 
+# Automated Deployment
+
+```bash
+git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
+cd kong-course-gateway-ops-for-kubernetes
+source deploy.sh
+```
+
+# Manual Deployment
+
 ## Pull Kubeconfig
 ```bash
 alias k=kubectl
