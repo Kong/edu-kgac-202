@@ -2,7 +2,7 @@ ingressController:
   enabled: false
 image:
   repository: kong/kong-gateway
-  tag: "2.8.0.0-alpine"
+  tag: "2.7-alpine"
 env:
   database: "off"
   role: "data_plane"

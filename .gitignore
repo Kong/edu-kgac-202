@@ -1,1 +1,5 @@
 .vscode
+cluster.crt
+cluster.key
+.rnd
+.DS_Store

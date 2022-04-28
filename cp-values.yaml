@@ -6,7 +6,7 @@ ingressController:
     tag: "2.2"
 image:
   repository: kong/kong-gateway
-  tag: "2.8.0.0-alpine"
+  tag: "2.7-alpine"
 env:
   database: "postgres"
   role: "control_plane"
