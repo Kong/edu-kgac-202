@@ -1,0 +1,5 @@
+kong-addr: KONG_ADMIN_API_URI
+headers:
+- "key1:value1"
+no-color: false
+verbose: 0
