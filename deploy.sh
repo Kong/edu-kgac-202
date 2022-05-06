@@ -61,12 +61,14 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 # Update Deployment Environment Variables
 kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[{\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"$KONG_ADMIN_API_URI\"},{\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"$KONG_PORTAL_GUI_HOST\"},{\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"https://$KONG_PORTAL_API_URI\"}]}]}}}}"
 # kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
-# {\"name\":\"KONG_SMTP_HOST\",\"value\":\"smtp.gmail.com\"},\
-# {\"name\":\"KONG_SMTP_PORT\",\"value\":\"587\"},\
-# {\"name\":\"KONG_SMTP_AUTH_TYPE\",\"value\":\"plain\"},\
-# {\"name\":\"KONG_SMTP_STARTTLS\",\"value\":\"on\"},\
-# {\"name\":\"KONG_SMTP_USERNAME\",\"value\":\"kongemailtest@gmail.com\"},\
-# {\"name\":\"KONG_SMTP_PASSWORD\",\"value\":\"jNzjktweewwYiQdpd2jymXV\"},\
+# {\"name\":\"KONG_SMTP_HOST\",\"value\":\"smtp-server\"},\
+# {\"name\":\"KONG_SMTP_PORT\",\"value\":\"1025\"},\
+# {\"name\":\"KONG_PORTAL_EMAIL_VERIFICATION\",\"value\":\"off\"},\
+# {\"name\":\"KONG_PORTAL_EMAILS_FROM\",\"value\":\"kong@konghq.com\"},\
+# {\"name\":\"KONG_PORTAL_EMAILS_REPLY_TO\",\"value\":\"noreply@konghq.com\"},\
+# {\"name\":\"KONG_ADMIN_EMAILS_FROM\",\"value\":\"kong@konghq.com\"},\
+# {\"name\":\"KONG_ADMIN_EMAILS_REPLY_TO\",\"value\":\"noreply@konghq.com\"},\
+# {\"name\":\"KONG_SMTP_MOCK\",\"value\":\"off\"},\
 # {\"name\":\"KONG_SMTP_ADMIN_EMAILS\",\"value\":\"noreply@konghq.com\"}\
 # ]}]}}}}"
 
@@ -102,4 +104,16 @@ kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=lic
 helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=$KONG_PROXY_URI
 
+# Deploy httpbin
+kubectl apply -f ./httpbin/httpbin.yaml
+
+# Deploy Fake SMTP Server
+kubectl apply -f ./smtp/smtp.yaml
+
+# Deploy KeyCloak
+kubectl create secret generic keycloak-realm -n kong --from-file=realm=./keycloak/kong_realm_template.json
+kubectl apply -f ./keycloak/keycloak.yaml
+
+echo ""
+echo "KONG MANAGER URL"
 echo "https://$KONG_MANAGER_URI"
