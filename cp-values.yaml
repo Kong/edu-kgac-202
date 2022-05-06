@@ -52,14 +52,14 @@ enterprise:
   rbac:
     enabled: false
   smtp:
-    enabled: true
-    portal_emails_from: none@example.com
-    portal_emails_reply_to: none@example.com
-    admin_emails_from: none@example.com
-    admin_emails_reply_to: none@example.com
-    smtp_admin_emails: none@example.com
-    smtp_port: 1025
-    smtp_starttls: false
+    enabled: false
+    # portal_emails_from: none@example.com
+    # portal_emails_reply_to: none@example.com
+    # admin_emails_from: none@example.com
+    # admin_emails_reply_to: none@example.com
+    # smtp_admin_emails: none@example.com
+    # smtp_port: 1025
+    # smtp_starttls: false
   license_secret: kong-enterprise-license
   portal:
     enabled: true
