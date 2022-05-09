@@ -111,7 +111,7 @@ kubectl apply -f ./httpbin/httpbin.yaml
 kubectl apply -f ./smtp/smtp.yaml
 
 # Deploy KeyCloak
-kubectl create secret generic keycloak-realm -n kong --from-file=realm=./keycloak/kong_realm_template.json
+kubectl create secret generic keycloak-realm -n kong-dp --from-file=realm=./keycloak/kong_realm_template.json
 kubectl apply -f ./keycloak/keycloak.yaml
 
 echo ""
