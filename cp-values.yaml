@@ -36,9 +36,7 @@ proxy:
   type: NodePort
   http:
     enabled: true
-    nodePort: 32000
-  tls:
-    enabled: false
+    nodePort: 30000
 admin:
   enabled: true
   type: NodePort
@@ -81,9 +79,10 @@ portal:
   enabled: true
   type: NodePort
   http:
+    enabled: true
     nodePort: 30003
-  tls:
-    enabled: false
+  ingress:
+    enabled: true
 portalapi:
   enabled: true
   http:
