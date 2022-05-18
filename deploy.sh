@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 
-# Pull kubeconfig
+# Pull Docker Certs
 cd /home/labuser
-alias k=kubectl
-./setup-k8s.sh
+./setup-docker.sh
 
-# Install Helm
-curl -L -o helm-v3.8.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz
-tar -xvf ./helm-v3.8.1-linux-amd64.tar.gz
-export PATH=$PATH:/home/labuser/linux-amd64
+# Create Kind Cluster
+KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
+cat << EOF > kind-config.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: avl
+networking:
+  apiServerAddress: ${KIND_HOST}
+  apiServerPort: 8443
+EOF
+
+kind create cluster --config kind-config.yaml
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
