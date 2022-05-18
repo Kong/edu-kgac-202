@@ -16,6 +16,7 @@ networking:
 EOF
 
 kind create cluster --config kind-config.yaml
+export KUBECONFIG=/home/labuser/.kube/config
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
