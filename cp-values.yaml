@@ -32,10 +32,10 @@ clustertelemetry:
     servicePort: 8006
     containerPort: 8006
 proxy:
-  enabled: true
+  enabled: false
   type: NodePort
   http:
-    enabled: true
+    enabled: false
     nodePort: 30000
 admin:
   enabled: true

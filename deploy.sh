@@ -18,28 +18,28 @@ nodes:
     extraPortMappings:
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30000
-      containerPort: 80
+      hostPort: 80
+      containerPort: 30000
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30001
-      containerPort: 8001
+      hostPort: 8001
+      containerPort: 30001
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30002
-      containerPort: 8002
+      hostPort: 8002
+      containerPort: 30002
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30003
-      containerPort: 8003
+      hostPort: 8003
+      containerPort: 30003
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30004
-      containerPort: 8004
+      hostPort: 8004
+      containerPort: 30004
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 30005
-      containerPort: 8080
+      hostPort: 8080
+      containerPort: 30005
 EOF
 
 kind create cluster --config kind-config.yaml
