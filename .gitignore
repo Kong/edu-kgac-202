@@ -3,3 +3,8 @@ cluster.crt
 cluster.key
 .rnd
 .DS_Store
+.cache/
+.config/
+.kube/
+admin_gui_session_conf
+portal_gui_session_conf
