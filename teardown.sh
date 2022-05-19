@@ -9,3 +9,6 @@ helm uninstall kong -n kong
 # Remove Namespaces
 kubectl delete ns kong
 kubectl delete ns kong-dp
+
+# Delete kind cluster
+kind cluster delete --name avl
