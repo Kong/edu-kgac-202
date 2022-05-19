@@ -16,27 +16,27 @@ networking:
 nodes:
   - role: control-plane
     extraPortMappings:
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30000
       containerPort: 30000
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30001
       containerPort: 30001
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30002
       containerPort: 30002
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30003
       containerPort: 30003
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30004
       containerPort: 30004
-    - listenAddress: "${KIND_HOST}"
+    - listenAddress: "0.0.0.0"
       protocol: TCP
       hostPort: 30005
       containerPort: 30005
