@@ -18,27 +18,27 @@ nodes:
     extraPortMappings:
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 80
+      hostPort: 30000
       containerPort: 30000
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 8001
+      hostPort: 30001
       containerPort: 30001
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 8002
+      hostPort: 30002
       containerPort: 30002
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 8003
+      hostPort: 30003
       containerPort: 30003
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 8004
+      hostPort: 30004
       containerPort: 30004
     - listenAddress: "${KIND_HOST}"
       protocol: TCP
-      hostPort: 8080
+      hostPort: 30005
       containerPort: 30005
 EOF
 
