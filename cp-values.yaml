@@ -32,13 +32,7 @@ clustertelemetry:
     servicePort: 8006
     containerPort: 8006
 proxy:
-  enabled: true
-  type: NodePort
-  http:
-    enabled: true
-    nodePort: 32000
-  tls:
-    enabled: false
+  enabled: false
 admin:
   enabled: true
   type: NodePort
@@ -47,6 +41,8 @@ admin:
     nodePort: 30001
   tls:
     enabled: false
+  ingress:
+    enabled: true
 enterprise:
   enabled: true
   rbac:
@@ -63,6 +59,8 @@ enterprise:
   license_secret: kong-enterprise-license
   portal:
     enabled: true
+  ingress:
+    enabled: true
 manager:
   enabled: true
   type: NodePort
@@ -70,6 +68,8 @@ manager:
     nodePort: 30002
   tls:
     enabled: false
+  ingress:
+    enabled: true
 secretVolumes:
   - kong-cluster-cert
 postgresql:

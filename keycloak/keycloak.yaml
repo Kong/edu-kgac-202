@@ -82,6 +82,8 @@ spec:
           value: https://30005-1-3ac87b1f.labs.konghq.com/
         - name: KEYCLOAK_CONFIG_ISSUER
           value: https://30005-1-3ac87b1f.labs.konghq.com/auth/realms/kong/.well-known/openid-configuration
+        - name: KEYCLOAK_FRONTEND_URL
+          value: https://30005-1-c0589a8a.labs.konghq.com/
         - name: KEYCLOAK_IMPORT
           valueFrom:
             secretKeyRef:

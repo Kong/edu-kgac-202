@@ -36,10 +36,6 @@ nodes:
       protocol: TCP
       hostPort: 30004
       containerPort: 30004
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30005
-      containerPort: 30005
 EOF
 
 kind create cluster --config kind-config.yaml
@@ -88,13 +84,13 @@ helm repo update
 
 # Deploy Kong Control Plane
 helm install -f cp-values.yaml kong kong/kong -n kong \
---set manager.ingress.hostname=${KONG_MANAGER_URI#*//} \
---set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST#*//} \
---set admin.ingress.hostname=${KONG_ADMIN_API_URI#*//} \
---set portalapi.ingress.hostname=${KONG_PORTAL_API_URI#*//}
+--set manager.ingress.hostname=${KONG_MANAGER_URI} \
+--set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
+--set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
+--set portalapi.ingress.hostname=${KONG_PORTAL_API_URI}
 
 # Update Deployment Environment Variables
-kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[{\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI#*//}\"},{\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST#*//}\"},{\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"https://${KONG_PORTAL_API_URI#*//}\"}]}]}}}}"
+#kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[{\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI#*//}\"},{\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST#*//}\"},{\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"https://${KONG_PORTAL_API_URI#*//}\"}]}]}}}}"
 # kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
 # {\"name\":\"KONG_SMTP_HOST\",\"value\":\"smtp-server\"},\
 # {\"name\":\"KONG_SMTP_PORT\",\"value\":\"1025\"},\
@@ -129,6 +125,10 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\"
 # ]}]}}}}"
 
 # Wait for Kong CP Pods
+while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
+  echo "Waiting for kong control plane pod..."
+  sleep 1
+done
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
 kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
 
@@ -137,7 +137,7 @@ kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
---set proxy.ingress.hostname=${KONG_PROXY_URI#*//}
+--set proxy.ingress.hostname=${KONG_PROXY_URI}
 
 # Deploy httpbin
 kubectl apply -f ./httpbin/httpbin.yaml
