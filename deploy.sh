@@ -83,7 +83,7 @@ helm repo add kong https://charts.konghq.com
 helm repo update
 
 # Deploy Kong Control Plane
-helm install -f cp-values.yaml kong kong/kong -n kong \
+helm install -f ./helm/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=${KONG_MANAGER_URI} \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
 --set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
@@ -92,7 +92,7 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 # Update Deployment Environment Variables
 kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
 {\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI}\"},\
-{\"name\":\"KONG_ADMIN_API_URL\",\"value\":\"${KONG_ADMIN_GUI_URL}\"},\
+{\"name\":\"KONG_ADMIN_GUI_URL\",\"value\":\"${KONG_ADMIN_GUI_URL}\"},\
 {\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST}\"},\
 {\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"${KONG_PORTAL_API_URL}\"}\
 ]}]}}}}"
@@ -130,7 +130,7 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\"
 # {\"name\":\"KONG_ADMIN_EMAILS_REPLY_TO\",\"value\":\"kong@labs.konghq.com\"}\
 # ]}]}}}}"
 
-# Wait for Kong CP Pods
+# Wait for Kong CP Pod
 while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
   echo "Waiting for kong control plane pod to exist..."
   sleep 1
@@ -143,8 +143,17 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
-helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
+helm install -f ./helm/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=${KONG_PROXY_URI}
+
+# Wait for Kong DP Pods
+while [[ -z $(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
+  echo "Waiting for kong data plane pod to exist..."
+  sleep 1
+done
+WAIT_POD=`kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}'`
+echo "Kong data plane pod exists and now waiting for it to come online..."
+kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
 
 # # Deploy httpbin
 # kubectl apply -f ./httpbin/httpbin.yaml
