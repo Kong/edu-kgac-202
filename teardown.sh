@@ -11,4 +11,4 @@ kubectl delete ns kong
 kubectl delete ns kong-dp
 
 # Delete kind cluster
-kind cluster delete --name avl
+kind delete cluster --name avl
