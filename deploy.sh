@@ -90,7 +90,13 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 --set portalapi.ingress.hostname=${KONG_PORTAL_API_URI}
 
 # Update Deployment Environment Variables
-#kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[{\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI#*//}\"},{\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST#*//}\"},{\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"https://${KONG_PORTAL_API_URI#*//}\"}]}]}}}}"
+kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
+{\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI}\"},\
+{\"name\":\"KONG_ADMIN_API_URL\",\"value\":\"${KONG_ADMIN_GUI_URL}\"},\
+{\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST}\"},\
+{\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"${KONG_PORTAL_API_URL}\"}\
+]}]}}}}"
+
 # kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
 # {\"name\":\"KONG_SMTP_HOST\",\"value\":\"smtp-server\"},\
 # {\"name\":\"KONG_SMTP_PORT\",\"value\":\"1025\"},\
@@ -126,11 +132,12 @@ helm install -f cp-values.yaml kong kong/kong -n kong \
 
 # Wait for Kong CP Pods
 while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
-  echo "Waiting for kong control plane pod..."
+  echo "Waiting for kong control plane pod to exist..."
   sleep 1
 done
 WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
-kubectl wait --for=condition=Ready pod $WAIT_POD -n kong
+echo "Kong control plane pod exists and now waiting for it to come online..."
+kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 
 # Deploy Kong Data Plane
 kubectl create namespace kong-dp
@@ -151,4 +158,4 @@ helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
 
 echo ""
 echo "KONG MANAGER URL"
-echo $KONG_MANAGER_URI
+echo $KONG_MANAGER_URL
