@@ -139,15 +139,15 @@ kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=lic
 helm install -f dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=${KONG_PROXY_URI}
 
-# Deploy httpbin
-kubectl apply -f ./httpbin/httpbin.yaml
+# # Deploy httpbin
+# kubectl apply -f ./httpbin/httpbin.yaml
 
-# Deploy Fake SMTP Server
-kubectl apply -f ./smtp/smtp.yaml
+# # Deploy Fake SMTP Server
+# kubectl apply -f ./smtp/smtp.yaml
 
-# Deploy KeyCloak
-kubectl create secret generic keycloak-realm -n kong-dp --from-file=realm=./keycloak/kong_realm_template.json
-kubectl apply -f ./keycloak/keycloak.yaml
+# # Deploy KeyCloak
+# kubectl create secret generic keycloak-realm -n kong-dp --from-file=realm=./keycloak/kong_realm_template.json
+# kubectl apply -f ./keycloak/keycloak.yaml
 
 echo ""
 echo "KONG MANAGER URL"
