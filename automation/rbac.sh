@@ -14,7 +14,7 @@ EOF
 kubectl create secret generic kong-session-config -n kong \
 --save-config \
 --dry-run=client \
---from-file=admin_session_conf=admin_gui_session_conf \
+--from-file=admin_gui_session_conf \
 -o yaml | \
 kubectl apply -f -
 
