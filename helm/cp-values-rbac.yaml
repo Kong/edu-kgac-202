@@ -12,23 +12,18 @@ env:
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
-  password:
-    valueFrom:
-      secretKeyRef:
-        name: kong-enterprise-superuser-password
-        key: password
-  admin_gui_session_conf:
-    valueFrom:
-      secretKeyRef:
-        name: kong-session-config
-        key: admin_gui_session_conf
   portal_gui_protocol: "https"
   portal_auth: basic-auth
   portal_session_conf:
     valueFrom:
       secretKeyRef:
-        name: kong-session-config
+        name: kong-portal-session-config
         key: portal_session_conf
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: kong-enterprise-superuser-password
+        key: password
 cluster:
   enabled: true
   tls:
