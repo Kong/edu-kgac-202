@@ -19,6 +19,11 @@ env:
       secretKeyRef:
         name: kong-portal-session-config
         key: portal_session_conf
+  admin_gui_url:
+  admin_api_url:
+  proxy_url:
+  portal_api_url:
+  portal_gui_host:
 cluster:
   enabled: true
   tls:
