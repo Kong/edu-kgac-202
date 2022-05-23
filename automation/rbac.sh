@@ -18,6 +18,8 @@ kubectl create secret generic kong-session-config -n kong \
 -o yaml | \
 kubectl apply -f -
 
+kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
+
 helm upgrade -f ./helm/cp-values-rbac.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=$KONG_MANAGER_URI \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
