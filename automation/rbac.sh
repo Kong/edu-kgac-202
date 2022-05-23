@@ -26,4 +26,3 @@ kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\"
 {\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST}\"},\
 {\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"${KONG_PORTAL_API_URL}\"}\
 ]}]}}}}"
-
