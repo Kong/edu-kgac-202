@@ -18,7 +18,7 @@ kubectl create secret generic kong-session-config -n kong \
 -o yaml | \
 kubectl apply -f -
 
-kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
+kubectl create secret generic kong-enterprise-superuser-password --from-literal=password -n kong
 
 sed -i "s/admin_gui_url:/admin_gui_url: https:\/\/$KONG_MANAGER_URI/g" ./helm/cp-values-rbac.yaml
 sed -i "s/admin_api_url:/admin_api_url: https:\/\/$KONG_ADMIN_API_URI/g" ./helm/cp-values-rbac.yaml
