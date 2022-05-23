@@ -85,6 +85,7 @@ helm repo update
 # Deploy Kong Control Plane
 sed -i "s/admin_gui_url:/admin_gui_url: https:\/\/$KONG_MANAGER_URI/g" ./helm/cp-values.yaml
 sed -i "s/admin_api_url:/admin_api_url: https:\/\/$KONG_ADMIN_API_URI/g" ./helm/cp-values.yaml
+sed -i "s/admin_api_uri:/admin_api_uri: $KONG_ADMIN_API_URI/g" ./helm/cp-values.yaml
 sed -i "s/proxy_url:/proxy_url: https:\/\/$KONG_PROXY_URI/g" ./helm/cp-values.yaml
 sed -i "s/portal_api_url:/portal_api_url: https:\/\/$KONG_PORTAL_API_URI/g" ./helm/cp-values.yaml
 sed -i "s/portal_gui_host:/portal_gui_host: $KONG_PORTAL_GUI_HOST/g" ./helm/cp-values.yaml
