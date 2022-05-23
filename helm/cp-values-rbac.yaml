@@ -3,15 +3,20 @@ ingressController:
   installCRDs: false
   image:
     repository: kong/kubernetes-ingress-controller
-    tag: "2.2"
+    tag: "2.3"
 image:
   repository: kong/kong-gateway
-  tag: "2.7-alpine"
+  tag: "2.8-alpine"
 env:
   database: "postgres"
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: kong-enterprise-superuser-password
+        key: password
   admin_gui_session_conf:
     valueFrom:
       secretKeyRef:
@@ -51,7 +56,10 @@ admin:
 enterprise:
   enabled: true
   rbac:
-    enabled: false
+    enabled: true
+    admin_gui_auth: basic-auth
+    session_conf_secret: kong-session-config
+    admin_gui_auth_conf_secret: kong
   smtp:
     enabled: false
   license_secret: kong-enterprise-license

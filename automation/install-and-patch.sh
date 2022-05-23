@@ -63,7 +63,6 @@ cat << EOF > admin_gui_session_conf
     "storage":"kong"
 }
 EOF
-kubectl create secret generic kong-session-config -n kong --from-file=admin_gui_session_conf
 
 # Create Portal Config
 cat << EOF > portal_gui_session_conf
@@ -76,7 +75,7 @@ cat << EOF > portal_gui_session_conf
     "storage":"kong"
 }
 EOF
-kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf
+kubectl create secret generic kong-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf --from-file=admin_session_conf=admin_gui_session_conf
 
 # Add Helm Repo
 helm repo add kong https://charts.konghq.com
@@ -154,16 +153,6 @@ done
 WAIT_POD=`kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}'`
 echo "Kong data plane pod exists and now waiting for it to come online..."
 kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
-
-# # Deploy httpbin
-# kubectl apply -f ./httpbin/httpbin.yaml
-
-# # Deploy Fake SMTP Server
-# kubectl apply -f ./smtp/smtp.yaml
-
-# # Deploy KeyCloak
-# kubectl create secret generic keycloak-realm -n kong-dp --from-file=realm=./keycloak/kong_realm_template.json
-# kubectl apply -f ./keycloak/keycloak.yaml
 
 echo ""
 echo "KONG MANAGER URL"
