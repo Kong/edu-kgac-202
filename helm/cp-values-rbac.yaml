@@ -30,6 +30,11 @@ env:
       secretKeyRef:
         name: kong-enterprise-superuser-password
         key: password
+  admin_gui_url:
+  admin_api_url:
+  proxy_url:
+  portal_api_url:
+  portal_gui_host:
 cluster:
   enabled: true
   tls:
