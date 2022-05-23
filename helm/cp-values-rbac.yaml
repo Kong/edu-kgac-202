@@ -4,6 +4,12 @@ ingressController:
   image:
     repository: kong/kubernetes-ingress-controller
     tag: "2.3"
+  env:
+   kong_admin_token:
+     valueFrom:
+       secretKeyRef:
+          name: kong-enterprise-superuser-password
+          key: password
 image:
   repository: kong/kong-gateway
   tag: "2.8-alpine"
