@@ -21,6 +21,7 @@ env:
         key: portal_session_conf
   admin_gui_url:
   admin_api_url:
+  admin_api_uri:
   proxy_url:
   portal_api_url:
   portal_gui_host:
