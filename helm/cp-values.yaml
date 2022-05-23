@@ -22,7 +22,7 @@ env:
   portal_session_conf:
     valueFrom:
       secretKeyRef:
-        name: kong-session-config
+        name: kong-portal-session-config
         key: portal_session_conf
 cluster:
   enabled: true
