@@ -4,6 +4,12 @@ ingressController:
   image:
     repository: kong/kubernetes-ingress-controller
     tag: "2.2"
+  env:
+   kong_admin_token:
+     valueFrom:
+       secretKeyRef:
+          name: kong-enterprise-superuser-password
+          key: password
 image:
   repository: kong/kong-gateway
   tag: "2.7-alpine"
@@ -19,6 +25,11 @@ env:
       secretKeyRef:
         name: kong-portal-session-config
         key: portal_session_conf
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: kong-enterprise-superuser-password
+        key: password
   admin_gui_url:
   admin_api_url:
   admin_api_uri:
