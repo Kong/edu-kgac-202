@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes
+
 # Teardown
-teardown.sh
+automation/teardown.sh
 
 # Install
-install.sh
+automation/install.sh
 
 # Patch
-patch.sh
+automation/patch.sh
