@@ -12,12 +12,4 @@ helm upgrade -f ./helm/cp-values.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
 
-# Update Deployment Environment Variables
-# kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\
-# {\"name\":\"KONG_ADMIN_API_URI\",\"value\":\"${KONG_ADMIN_API_URI}\"},\
-# {\"name\":\"KONG_ADMIN_GUI_URL\",\"value\":\"${KONG_ADMIN_GUI_URL}\"},\
-# {\"name\":\"KONG_PORTAL_GUI_HOST\",\"value\":\"${KONG_PORTAL_GUI_HOST}\"},\
-# {\"name\":\"KONG_PORTAL_API_URL\",\"value\":\"${KONG_PORTAL_API_URL}\"}\
-# ]}]}}}}"
-
 watch "kubectl get pods -A"
