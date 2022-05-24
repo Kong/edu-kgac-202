@@ -90,6 +90,8 @@ sed -i "s/proxy_url:/proxy_url: https:\/\/$KONG_PROXY_URI/g" ./helm/cp-values.ya
 sed -i "s/portal_api_url:/portal_api_url: https:\/\/$KONG_PORTAL_API_URI/g" ./helm/cp-values.yaml
 sed -i "s/portal_gui_host:/portal_gui_host: $KONG_PORTAL_GUI_HOST/g" ./helm/cp-values.yaml
 
+kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
+
 helm install -f ./helm/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=${KONG_MANAGER_URI} \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
