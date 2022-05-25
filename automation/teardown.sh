@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export KUBECONFIG=/home/labuser/.kube/config
 
 # Remove DP
 helm uninstall kong-dp -n kong-dp
