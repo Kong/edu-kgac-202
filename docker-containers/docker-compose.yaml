@@ -1,0 +1,128 @@
+version: '2.2'
+
+networks:
+  kong-edu-net:
+    name: kong-edu-net
+    driver: bridge
+
+services:
+  keycloak:
+    networks:
+    - kong-edu-net
+    image: jboss/keycloak:16.1.1
+    container_name: keycloak
+    command: -Dkeycloak.profile.feature.upload_scripts=enabled
+    volumes:
+    - /srv/shared/misc:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "$KEYCLOAK_URI/auth/realms/master"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+    ports:
+    - 8080:8080
+    environment:
+      DB_VENDOR: H2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: "/data/kong_realm_template.json"
+      PROXY_ADDRESS_FORWARDING: "true"
+
+  smtp-server:
+    networks:
+    - kong-edu-net
+    image: reachfive/fake-smtp-server:0.8.1
+    container_name: smtp
+    hostname: smtp
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 16s
+      timeout: 16s
+      retries: 16        
+    restart: on-failure
+    ports:
+    - "1080:1080/tcp"
+
+  mockbin:
+    networks:
+    - kong-edu-net
+    image: mashape/mockbin:latest
+    container_name: mockbin
+    hostname: mockbin
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 30s
+      timeout: 30s
+      retries: 3        
+    restart: on-failure
+    ports:
+    - "8888:8080/tcp"
+
+  redis:
+    networks:
+    - kong-edu-net
+    image: redis:alpine3.15
+    container_name: redis
+    hostname: redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3        
+    restart: on-failure
+    ports:
+    - "6379:6379/tcp"
+
+  prometheus:
+    networks:
+    - kong-edu-net
+    image: prom/prometheus:v2.34.0
+    container_name: prometheus
+    hostname: prometheus
+    command: --config.file=/etc/prometheus/prometheus.yaml --log.level=debug
+    healthcheck:
+      test: ["CMD", "wget", "-S", "--spider", "http://prometheus:9090"]
+      interval: 10s
+      timeout: 15s
+      retries: 10  
+    ports:
+    - 9090:9090
+    volumes:
+    - /srv/shared/misc/prometheus.yaml:/etc/prometheus/prometheus.yaml
+
+  statsd:
+    networks:
+    - kong-edu-net
+    image: kong/statsd-exporter-advanced:0.3.1
+    container_name: statsd
+    hostname: statsd
+    depends_on:
+    - prometheus
+    healthcheck:
+      test: ["CMD", "wget", "-S", "--spider", "http://statsd:9102"]
+      interval: 10s
+      timeout: 15s
+      retries: 10 
+    command: --statsd.mapping-config=/tmp/statsd.rules.yaml --statsd.listen-unixgram=''
+    ports:
+    - 9125:9125
+    - 9102:9102
+    volumes:
+    - /srv/shared/misc/statsd.rules.yaml:/tmp/statsd.rules.yaml
+
+  grafana:
+    networks:
+    - kong-edu-net
+    image: grafana/grafana:8.4.6
+    container_name: grafana
+    hostname: grafana
+    depends_on:
+    - prometheus
+    healthcheck:
+      test: ["CMD", "wget", "-S", "--spider", "http://grafana:3000"]
+      interval: 10s
+      timeout: 15s
+      retries: 10 
+    ports:
+    - 3000:3000
