@@ -4,6 +4,13 @@
 cd /home/labuser
 ./setup-docker.sh
 
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+mkdir -p /srv/shared/misc
+cp docker-containers/prometheus.yaml /srv/shared/misc/
+cp docker-containers/statsd.rules.yaml /srv/shared/misc/
+docker-compose up -d
+cd /home/labuser
+
 # Create Kind Cluster
 KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 cat << EOF > kind-config.yaml
