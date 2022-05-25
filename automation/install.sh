@@ -6,8 +6,8 @@ cd /home/labuser
 
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
 mkdir -p /srv/shared/misc
-cp docker-containers/prometheus.yaml /srv/shared/misc/
-cp docker-containers/statsd.rules.yaml /srv/shared/misc/
+cp prometheus.yaml /srv/shared/misc/
+cp statsd.rules.yaml /srv/shared/misc/
 docker-compose up -d
 cd /home/labuser
 
