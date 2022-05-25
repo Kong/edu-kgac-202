@@ -59,21 +59,6 @@ services:
     ports:
     - "8888:8080/tcp"
 
-  redis:
-    networks:
-    - kong-edu-net
-    image: redis:alpine3.15
-    container_name: redis
-    hostname: redis
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-      interval: 30s
-      timeout: 30s
-      retries: 3        
-    restart: on-failure
-    ports:
-    - "6379:6379/tcp"
-
   prometheus:
     networks:
     - kong-edu-net
