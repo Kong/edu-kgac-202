@@ -18,6 +18,7 @@ env:
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
+  status_listen: 0.0.0.0:8100
   portal_gui_protocol: "https"
   portal_auth: basic-auth
   portal_session_conf:
