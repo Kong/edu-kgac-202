@@ -12,6 +12,7 @@ cd /home/labuser
 # cd /home/labuser
 
 # Deploy and configure lab services
+kubectl create ns monitoring
 kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
 
 # Create Kind Cluster
