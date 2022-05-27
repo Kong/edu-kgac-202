@@ -48,9 +48,9 @@ EOF
 kind create cluster --config kind-config.yaml
 export KUBECONFIG=/home/labuser/.kube/config
 
-# Deploy and configure lab services
+# Create k8s resources here that need to exist prior to helm
 kubectl create ns monitoring
-kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
+kubectl apply -f /home/labuser/kong-course-gateway-ops-for-kubernetes/crds/coreos-crds.yaml
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
@@ -174,6 +174,9 @@ done
 WAIT_POD=`kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}'`
 echo "Kong data plane pod exists and now waiting for it to come online..."
 kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
+
+# Deploy some course components
+kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
 
 echo ""
 echo "KONG MANAGER URL"
