@@ -14,8 +14,6 @@ image:
   repository: kong/kong-gateway
   tag: "2.7-alpine"
 env:
-  serviceMonitor:
-    enabled: true
   database: "postgres"
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
@@ -110,3 +108,6 @@ portalapi:
   type: NodePort
   ingress: 
     enabled: true
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
