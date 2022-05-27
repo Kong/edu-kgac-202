@@ -52,6 +52,8 @@ proxy:
   enabled: false
 admin:
   enabled: true
+  labels:
+    enable-metrics: "true"
   type: NodePort
   http:
     enabled: true
