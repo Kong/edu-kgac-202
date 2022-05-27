@@ -16,6 +16,8 @@ proxy:
   http:
     enabled: true
     nodePort: 30000
+  labels:
+    enable-metrics: "true"
   tls:
     enabled: false
   type: NodePort
