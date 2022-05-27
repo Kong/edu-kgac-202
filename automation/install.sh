@@ -11,6 +11,9 @@ cd /home/labuser
 # docker-compose up -d
 # cd /home/labuser
 
+# Deploy and configure lab services
+kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
+
 # Create Kind Cluster
 KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 cat << EOF > kind-config.yaml
