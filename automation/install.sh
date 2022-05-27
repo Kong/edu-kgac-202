@@ -11,10 +11,6 @@ cd /home/labuser
 # docker-compose up -d
 # cd /home/labuser
 
-# Deploy and configure lab services
-kubectl create ns monitoring
-kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
-
 # Create Kind Cluster
 KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 cat << EOF > kind-config.yaml
@@ -51,6 +47,10 @@ EOF
 
 kind create cluster --config kind-config.yaml
 export KUBECONFIG=/home/labuser/.kube/config
+
+# Deploy and configure lab services
+kubectl create ns monitoring
+kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
