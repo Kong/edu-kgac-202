@@ -12,10 +12,10 @@ data:
 apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
 metadata:
-  name: Jane
+  name: jane
   namespace: kong-dp
   annotations:
     kubernetes.io/ingress.class: kong
-username: Jane
+username: jane
 credentials:
   - jane-apikey
