@@ -176,7 +176,7 @@ echo "Kong data plane pod exists and now waiting for it to come online..."
 kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
 
 # Deploy some course components
-kubectl apply -f ./kong-course-gateway-ops-for-kubernetes/httpbin/httpbin.yaml
+kubectl apply -f ./httpbin/httpbin.yaml
 
 echo ""
 echo "KONG MANAGER URL"

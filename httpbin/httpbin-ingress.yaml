@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: route1
+  namespace: default
+  annotations:
+    konghq.com/strip-path: "true"
+    kubernetes.io/ingress.class: kong
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /route1
+          backend:
+            serviceName: route1-ext
+            servicePort: 80
