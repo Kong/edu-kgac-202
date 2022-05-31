@@ -1,0 +1,47 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-jwt
+config:
+  secret_is_base64: false
+  run_on_preflight: true
+plugin: jwt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin
+  namespace: default
+  labels:
+    app: httpbin
+  annotations:
+    konghq.com/plugins: "httpbin-jwt"
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: httpbin
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpbin
+  namespace: default
+  annotations: 
+    konghq.com/strip-path: "true"
+    konghq.com/plugins: "httpbin-jwt"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /httpbin
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
