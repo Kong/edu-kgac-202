@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: httpbin
   namespace: default
+  annotations: 
+    konghq.com/strip-path: "true"
 spec:
   ingressClassName: kong
   rules:
