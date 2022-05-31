@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: route1
+  name: httpbin
   namespace: default
   annotations:
     konghq.com/strip-path: "true"
@@ -10,7 +10,7 @@ spec:
   rules:
   - http:
       paths:
-        - path: /route1
+        - path: /httpbin
           backend:
-            serviceName: route1-ext
+            serviceName: httpbin
             servicePort: 80
