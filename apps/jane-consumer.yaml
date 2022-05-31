@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jane-apikey
+  namespace: kong-dp
+type: Opaque
+data:
+  key: SmFuZVBhc3N3b3Jk
+  kongCredType: a2V5LWF1dGg=
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: Jane
+  namespace: kong-dp
+  annotations:
+    kubernetes.io/ingress.class: kong
+username: Jane
+credentials:
+  - jane-apikey
