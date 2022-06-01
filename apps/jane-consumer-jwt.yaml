@@ -6,8 +6,9 @@ metadata:
   namespace: kong-dp
 type: Opaque
 data:
-  key: SmFuZVBhc3N3b3Jk
-  kongCredType: a2V5LWF1dGg=
+  key: ##DATA_KEY##
+  kongCredType: and0
+  algorithm: UlMyNTY=
 ---
 apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
@@ -18,4 +19,4 @@ metadata:
     kubernetes.io/ingress.class: kong
 username: jane
 credentials:
-  - jane-apikey
+  - jane-jwt
