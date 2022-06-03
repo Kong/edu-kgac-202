@@ -3,6 +3,8 @@ kind: KongPlugin
 metadata:
   name: httpbin-jwt
 plugin: jwt
+config:
+  secret_is_base64: true
 ---
 apiVersion: v1
 kind: Service
