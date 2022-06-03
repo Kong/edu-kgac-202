@@ -7,7 +7,7 @@ rm -f ./jane
 rm -f ./jane.pub
 rm -f ./jane.pem
 openssl genrsa -out ./jane.pem 2048
-openssl rsa -in private.pem -outform PEM -pubout -out jane.pub
+openssl rsa -in private.pem -outform PEM -pubout -out ./jane.pub
 
 # Create jane-consumer.yaml
 cat << EOF > jane-consumer.yaml
