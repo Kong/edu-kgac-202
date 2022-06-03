@@ -6,7 +6,7 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes/apps/jwt
 rm -f ./jane
 rm -f ./jane.pub
 ssh-keygen -N "" -f ./jane
-export JANE_PUB=`ssh-keygen -f ./jane.pub -e -m pem`
+export JANE_PUB=\"`ssh-keygen -f ./jane.pub -e -m pem`\"
 
 # Create jane-consumer.yaml
 cat << EOF > jane-consumer.yaml
