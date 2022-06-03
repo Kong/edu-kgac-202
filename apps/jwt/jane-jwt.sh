@@ -22,20 +22,12 @@ EOF
 kubectl apply -f ./jane-consumer.yaml
 
 # Create jane-secret.yaml
-cat << EOF > jane-secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: jane-jwt
-  namespace: kong-dp
-type: Opaque
-stringData:
-  key: jane-issuer
-  kongCredType: jwt
-  algorithm: RS256
-  rsa_public_key: |-
-    $JANE_PUB
-EOF
+kubectl create secret generic jane-jwt \
+  --from-literal=kongCredType=jwt  \
+  --from-literal=key="jane-issuer" \
+  --from-literal=algorithm=RS256 \
+  --from-literal=rsa_public_key="$JANE_PUB" \
+  -o yaml --dry-run=client > ./jane-secret.yaml
 kubectl apply -f ./jane-secret.yaml
 
 # Update Jane Consumer
