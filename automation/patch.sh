@@ -2,8 +2,8 @@
 export KUBECONFIG=/home/labuser/.kube/config
 
 sed -i 's/tag: "2.2"/tag: "2.3.1"/g' ./helm/cp-values.yaml
-sed -i 's/tag: "2.7-alpine"/tag: "2.8.1-alpine"/g' ./helm/dp-values.yaml 
-sed -i 's/tag: "2.7-alpine"/tag: "2.8.1-alpine"/g' ./helm/cp-values.yaml 
+sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./helm/dp-values.yaml 
+sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./helm/cp-values.yaml 
 
 helm upgrade -f ./helm/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=$KONG_PROXY_URI
