@@ -17,3 +17,55 @@ spec:
             name: httpbin
             port:
               number: 80
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-oidc
+plugin: openid-connect
+config:
+  issuer: $KEYCLOAK_CONFIG_ISSUER
+  client_id: kong
+  client_secret: $CLIENT_SECRET
+  redirect_uri: $KEYCLOAK_REDIRECT_URI/oidc
+  response_mode: form_post
+  ssl_verify: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin
+  namespace: default
+  labels:
+    app: httpbin
+  annotations:
+    konghq.com/plugins: "httpbin-oidc"
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: httpbin
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpbin
+  namespace: default
+  annotations: 
+    konghq.com/strip-path: "true"
+    konghq.com/plugins: "httpbin-oidc"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /httpbin
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
