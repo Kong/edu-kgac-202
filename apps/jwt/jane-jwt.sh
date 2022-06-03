@@ -5,8 +5,9 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes/apps/jwt
 # Generate keypair
 rm -f ./jane
 rm -f ./jane.pub
-ssh-keygen -N "" -f ./jane
-export JANE_PUB=`ssh-keygen -f ./jane.pub -e -m pem`
+rm -f ./jane.pem
+openssl genrsa -out ./jane.pem 2048
+openssl rsa -in private.pem -outform PEM -pubout -out jane.pub
 
 # Create jane-consumer.yaml
 cat << EOF > jane-consumer.yaml
@@ -25,7 +26,7 @@ kubectl create secret generic jane-jwt \
   --from-literal=kongCredType=jwt  \
   --from-literal=key="jane-issuer" \
   --from-literal=algorithm=RS256 \
-  --from-literal=rsa_public_key="$JANE_PUB" \
+  --from-file=rsa_public_key=./jane.pub \
   -o yaml --dry-run=client > ./jane-secret.yaml
 kubectl apply -f ./jane-secret.yaml
 
