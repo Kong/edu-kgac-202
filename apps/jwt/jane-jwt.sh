@@ -27,7 +27,7 @@ kubectl create secret generic jane-jwt \
   --from-literal=key="jane-issuer" \
   --from-literal=algorithm=RS256 \
   --from-literal=rsa_public_key="$JANE_PUB" \
-  -o yaml --dry-run=client > ./jane-secret.yaml
+  -o yaml -n kong-dp --dry-run=client > ./jane-secret.yaml
 kubectl apply -f ./jane-secret.yaml
 
 # Update Jane Consumer
