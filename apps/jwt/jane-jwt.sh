@@ -33,7 +33,8 @@ stringData:
   key: jane-issuer
   kongCredType: jwt
   algorithm: RS256
-  rsa_public_key: $JANE_PUB
+  rsa_public_key: |-
+    $JANE_PUB
 EOF
 kubectl apply -f ./jane-secret.yaml
 
