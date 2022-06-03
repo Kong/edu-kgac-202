@@ -44,5 +44,12 @@ credentials:
 EOF
 kubectl apply -f ./jane-consumer-jwt.yaml
 
+export JANE_HEADER=`echo -n '{"alg":"RS256","typ":"JWT"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'`
+export JANE_PAYLOAD=`echo -n '{"iss":"jane-issuer"}' | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'`
+export JANE_HEADER_PAYLOAD=$JANE_HEADER.$JANE_PAYLOAD
+export JANE_PEM=`cat ./jane.pem`
+export JANE_SIG=`openssl dgst -sha256 -sign <(echo -n "${JANE_PEM}") <(echo -n "${JANE_HEADER_PAYLOAD}") | openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'`
+export JANE_TOKEN=$JANE_HEADER.$JANE_PAYLOAD.$JANE_SIG
+
 # Back to starting dir
 cd $CURRENT_DIR

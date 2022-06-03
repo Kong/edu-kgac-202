@@ -4,7 +4,7 @@ metadata:
   name: httpbin-jwt
 plugin: jwt
 config:
-  secret_is_base64: true
+  secret_is_base64: false
 ---
 apiVersion: v1
 kind: Service
