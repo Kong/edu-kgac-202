@@ -14,4 +14,7 @@ helm upgrade -f ./helm/cp-values.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
 
+# Deploy some course components
+kubectl apply -f apps/httpbin.yaml
+
 watch "kubectl get pods -A"
