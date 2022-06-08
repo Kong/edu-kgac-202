@@ -1,0 +1,50 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: public-service
+  namespace: default
+  annotations: 
+    konghq.com/strip-path: "false"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /ip
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-mtls
+plugin: mtls
+config:
+  ca_certificates: CA_CERT_ID
+  revocation_mode: "SKIP"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: confidential-route
+  namespace: default
+  annotations: 
+    konghq.com/strip-path: "false"
+    konghq.com/plugins: "httpbin-mtls"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /uuid
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
