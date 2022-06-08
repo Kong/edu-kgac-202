@@ -9,10 +9,8 @@ cd kong-course-gateway-ops-for-kubernetes
 
 ## Install and Patch
 ```bash
-source ./automation/install-and-patch.sh
+source ./automation/reset-kongcluster.sh
 ```
-
-## 
 
 ## Remove Helm Releases and Delete Namespaces
 ```bash
