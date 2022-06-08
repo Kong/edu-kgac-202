@@ -19,7 +19,7 @@ proxy:
   labels:
     enable-metrics: "true"
   tls:
-    enabled: false
+    enabled: true
   type: NodePort
   ingress: 
     enabled: true
