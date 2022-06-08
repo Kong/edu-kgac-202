@@ -13,6 +13,6 @@ openssl genrsa -out client.key 2048
 openssl req -new -subj "/emailAddress=demo@example.com/CN=example.com/O=Kong Inc./OU=Kong Academy/C=WD/ST=Earth/L=Global" -key client.key -out client.csr
 
 # Make sure that there are the files in the computer: openssl.cnf, index.txt and serial
-openssl ca -batch -config /home/labuser/kong-gateway-operations/securing-services/openssl.cnf -extensions usr_cert -cert ca.cert.pem -keyfile ca.key.pem -passin 'pass:konglabs' -in client.csr -out client.crt
+openssl ca -batch -config ./openssl.cnf -extensions usr_cert -cert ca.cert.pem -keyfile ca.key.pem -passin 'pass:konglabs' -in client.csr -out client.crt
 
 popd
