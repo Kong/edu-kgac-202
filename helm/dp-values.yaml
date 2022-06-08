@@ -20,6 +20,7 @@ proxy:
     enable-metrics: "true"
   tls:
     enabled: true
+    nodePort: 30443
   type: NodePort
   ingress: 
     enabled: true
