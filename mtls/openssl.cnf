@@ -1,31 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@chadkong 
-gigaprimatus
-/
-kong-gateway-operations
-Public
-forked from kong-education/kong-gateway-operations
-Code
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-kong-gateway-operations/securing-services/openssl.cnf
-
-John Fitzpatrick Added scripts to create certs
-Latest commit 836b46c on Sep 7, 2021
- History
- 0 contributors
-132 lines (113 sloc)  4.1 KB
-   
 # OpenSSL root CA configuration file.
 
 [ ca ]
@@ -158,15 +130,3 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer
 keyUsage = critical, digitalSignature
 extendedKeyUsage = critical, OCSPSigning
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
