@@ -7,7 +7,7 @@ echo 1337 > serial
 
 openssl genrsa -aes256 -out ca.key.pem -passout pass:konglabs 4096
 chmod 400 ca.key.pem
-openssl req -config /home/labuser/kong-gateway-operations/securing-services/openssl.cnf -key ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -passin 'pass:konglabs' -subj "/C=WD/ST=Earth/L=Global/O=Kong Inc./CN=Kong CA" -out ca.cert.pem
+openssl req -config ./openssl.cnf -key ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -passin 'pass:konglabs' -subj "/C=WD/ST=Earth/L=Global/O=Kong Inc./CN=Kong CA" -out ca.cert.pem
 
 openssl genrsa -out client.key 2048
 openssl req -new -subj "/emailAddress=demo@example.com/CN=example.com/O=Kong Inc./OU=Kong Academy/C=WD/ST=Earth/L=Global" -key client.key -out client.csr
