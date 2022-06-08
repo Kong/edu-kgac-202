@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 CERT_FOLDER=/home/labuser/.certificates
+export OPENSSL_CONF=/home/labuser/kong-course-gateway-ops-for-kubernetes/mtls/openssl.cnf
 mkdir -p ${CERT_FOLDER}
 pushd ${CERT_FOLDER}
 touch index.txt
