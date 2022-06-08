@@ -43,6 +43,14 @@ nodes:
       protocol: TCP
       hostPort: 30004
       containerPort: 30004
+    - listenAddress: "0.0.0.0"
+      protocol: TCP
+      hostPort: 30005
+      containerPort: 30005
+    - listenAddress: "0.0.0.0"
+      protocol: TCP
+      hostPort: 30006
+      containerPort: 30006
 EOF
 
 kind create cluster --config kind-config.yaml
