@@ -5,6 +5,7 @@ pushd ${CERT_FOLDER}
 touch index.txt
 echo 1337 > serial
 
+openssl rand -writerand .rnd
 openssl genrsa -aes256 -out ca.key.pem -passout pass:konglabs 4096
 chmod 400 ca.key.pem
 openssl req -config /home/labuser/kong-course-gateway-ops-for-kubernetes/mtls/openssl.cnf -key ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -passin 'pass:konglabs' -subj "/C=WD/ST=Earth/L=Global/O=Kong Inc./CN=Kong CA" -out ca.cert.pem
