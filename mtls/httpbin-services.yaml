@@ -15,7 +15,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: public-service
+            name: httpbin
             port:
               number: 80
 ---
@@ -35,6 +35,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: confidential-route
+            name: httpbin
             port:
               number: 80
