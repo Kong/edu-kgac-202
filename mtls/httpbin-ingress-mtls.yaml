@@ -12,7 +12,7 @@ config:
 apiVersion: v1
 kind: Service
 metadata:
-  name: httpbin-oidc
+  name: httpbin-mtls
   namespace: default
   labels:
     app: httpbin
@@ -64,6 +64,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: httpbin-oidc
+            name: httpbin-mtls
             port:
               number: 80
