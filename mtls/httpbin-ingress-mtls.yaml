@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-  - http:
+  - https:
       paths:
       - path: /ip
         pathType: Prefix
@@ -59,7 +59,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-  - http:
+  - https:
       paths:
       - path: /uuid
         pathType: Prefix
