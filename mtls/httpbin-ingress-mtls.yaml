@@ -5,7 +5,8 @@ metadata:
   name: httpbin-mtls
 plugin: mtls-auth
 config:
-  ca_certificates: cce8c384-721f-4f58-85dd-50834e3e733a
+  ca_certificates: 
+  - cce8c384-721f-4f58-85dd-50834e3e733a
   skip_consumer_lookup: true
   revocation_check_mode: "SKIP"
 ---
