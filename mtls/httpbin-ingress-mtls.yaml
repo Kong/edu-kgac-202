@@ -1,4 +1,32 @@
 ---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-mtls
+plugin: mtls-auth
+config:
+  ca_certificates: cce8c384-721f-4f58-85dd-50834e3e733a
+  skip_consumer_lookup: true
+  revocation_mode: "SKIP"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin-oidc
+  namespace: default
+  labels:
+    app: httpbin
+  annotations:
+    konghq.com/plugins: "httpbin-mtls"
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: httpbin
+  type: ClusterIP
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -19,16 +47,6 @@ spec:
             port:
               number: 80
 ---
-apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
-metadata:
-  name: httpbin-mtls
-plugin: mtls-auth
-config:
-  ca_certificates: cce8c384-721f-4f58-85dd-50834e3e733a
-  skip_consumer_lookup: true
-  revocation_mode: "SKIP"
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -46,6 +64,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: httpbin
+            name: httpbin-oidc
             port:
               number: 80
