@@ -1,22 +1,3 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: httpbin-oidc
-  namespace: default
-  annotations: 
-    konghq.com/strip-path: "true"
-spec:
-  ingressClassName: kong
-  rules:
-  - http:
-      paths:
-      - path: /oidc
-        pathType: Prefix
-        backend:
-          service:
-            name: httpbin
-            port:
-              number: 80
 ---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
@@ -24,17 +5,17 @@ metadata:
   name: httpbin-oidc
 plugin: openid-connect
 config:
-  issuer: $KEYCLOAK_CONFIG_ISSUER
+  issuer: KEYCLOAK_CONFIG_ISSUER
   client_id: kong
-  client_secret: $CLIENT_SECRET
-  redirect_uri: $KEYCLOAK_REDIRECT_URI/oidc
+  client_secret: CLIENT_SECRET
+  redirect_uri: KEYCLOAK_REDIRECT_URI/oidc
   response_mode: form_post
   ssl_verify: false
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: httpbin
+  name: httpbin-oidc
   namespace: default
   labels:
     app: httpbin
@@ -52,7 +33,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: httpbin
+  name: httpbin-oidc
   namespace: default
   annotations: 
     konghq.com/strip-path: "true"
@@ -62,10 +43,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /httpbin
+      - path: /uuid
         pathType: Prefix
         backend:
           service:
-            name: httpbin
+            name: httpbin-oidc
             port:
               number: 80
