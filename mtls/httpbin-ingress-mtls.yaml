@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-  - https:
+  - http:
       paths:
       - path: /ip
         pathType: Prefix
@@ -59,10 +59,10 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-  - https:
+  - http:
       paths:
       - path: /uuid
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: httpbin-mtls
