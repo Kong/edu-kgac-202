@@ -25,7 +25,8 @@ metadata:
   name: httpbin-mtls
 plugin: mtls-auth
 config:
-  ca_certificates: 447f6545-283f-46af-bf19-9b57f760c5b4
+  ca_certificates: cce8c384-721f-4f58-85dd-50834e3e733a
+  skip_consumer_lookup: true
   revocation_mode: "SKIP"
 ---
 apiVersion: networking.k8s.io/v1
