@@ -7,7 +7,7 @@ plugin: mtls-auth
 config:
   ca_certificates: cce8c384-721f-4f58-85dd-50834e3e733a
   skip_consumer_lookup: true
-  revocation_mode: "SKIP"
+  revocation_check_mode: "SKIP"
 ---
 apiVersion: v1
 kind: Service
