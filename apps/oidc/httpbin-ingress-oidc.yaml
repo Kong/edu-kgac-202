@@ -1,17 +1,4 @@
 ---
-apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
-metadata:
-  name: httpbin-oidc
-plugin: openid-connect
-config:
-  issuer: KEYCLOAK_CONFIG_ISSUER
-  client_id: kong
-  client_secret: CLIENT_SECRET
-  redirect_uri: KEYCLOAK_REDIRECT_URI/oidc
-  response_mode: form_post
-  ssl_verify: false
----
 apiVersion: v1
 kind: Service
 metadata:
