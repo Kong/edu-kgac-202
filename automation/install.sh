@@ -173,6 +173,7 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 
 # Deploy Kong Data Plane
 kubectl create namespace kong-dp
+kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 helm install -f ./helm/dp-values.yaml kong-dp kong/kong -n kong-dp \
