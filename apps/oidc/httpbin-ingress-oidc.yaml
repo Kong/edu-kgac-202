@@ -23,7 +23,7 @@ metadata:
   name: httpbin-oidc
   namespace: default
   annotations: 
-    konghq.com/strip-path: "false"
+    konghq.com/strip-path: "true"
     konghq.com/plugins: "httpbin-oidc"
 spec:
   ingressClassName: kong
