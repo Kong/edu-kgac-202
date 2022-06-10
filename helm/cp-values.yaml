@@ -1,17 +1,15 @@
-# ingressController:
-#   enabled: true
-#   installCRDs: false
-#   image:
-#     repository: kong/kubernetes-ingress-controller
-#     tag: "2.2"
-#   env:
-#    kong_admin_token:
-#      valueFrom:
-#        secretKeyRef:
-#           name: kong-enterprise-superuser-password
-#           key: password
 ingressController:
-  enabled: false
+  enabled: true
+  installCRDs: false
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "2.2"
+  env:
+   kong_admin_token:
+     valueFrom:
+       secretKeyRef:
+          name: kong-enterprise-superuser-password
+          key: password
 image:
   repository: kong/kong-gateway
   tag: "2.7-alpine"
