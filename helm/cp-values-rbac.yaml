@@ -5,9 +5,10 @@ ingressController:
     repository: kong/kubernetes-ingress-controller
     tag: "2.3"
   env:
-   kong_admin_token:
-     valueFrom:
-       secretKeyRef:
+    publish_service: hybrid/example-release-data-kong-proxy
+    kong_admin_token:
+      valueFrom:
+        secretKeyRef:
           name: kong-enterprise-superuser-password
           key: password
 image:
