@@ -5,7 +5,7 @@ ingressController:
     repository: kong/kubernetes-ingress-controller
     tag: "2.2"
   env:
-    publish_service: hybrid/example-release-data-kong-proxy
+    publish_service: kong-dp/kong-dp
     kong_admin_token:
       valueFrom:
         secretKeyRef:
