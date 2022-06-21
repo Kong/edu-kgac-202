@@ -3,7 +3,7 @@ ingressController:
   installCRDs: false
   image:
     repository: kong/kubernetes-ingress-controller
-    tag: "2.3"
+    tag: "2.4"
   env:
     publish_service: kong-dp/kong-dp-kong-proxy
     kong_admin_token:
