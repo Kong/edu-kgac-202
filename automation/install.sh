@@ -119,7 +119,8 @@ helm install -f ./helm/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=${KONG_MANAGER_URI} \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
 --set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
---set portalapi.ingress.hostname=${KONG_PORTAL_API_URI}
+--set portalapi.ingress.hostname=${KONG_PORTAL_API_URI} \
+--set proxy.ingress.hostname=${KONG_PROXY_URI}
 
 # Update Deployment Environment Variables
 # kubectl patch deployment kong-kong -n kong -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"proxy\",\"env\":[\

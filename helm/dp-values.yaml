@@ -41,3 +41,5 @@ portal:
   enabled: false
 portalapi:
   enabled: false
+admin:
+  enabled: false
