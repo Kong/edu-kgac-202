@@ -5,7 +5,7 @@ ingressController:
     repository: kong/kubernetes-ingress-controller
     tag: "2.2"
   env:
-    publish_service: kong/kong-kong-proxy
+    publish_service: kong-dp/kong-dp-kong-proxy
     kong_admin_token:
       valueFrom:
         secretKeyRef:
@@ -51,17 +51,7 @@ clustertelemetry:
     servicePort: 8006
     containerPort: 8006
 proxy:
-  http:
-    enabled: true
-    nodePort: 30000
-  labels:
-    enable-metrics: "true"
-  tls:
-    enabled: true
-    nodePort: 30443
-  type: NodePort
-  ingress: 
-    enabled: true
+  enabled: false
 admin:
   enabled: true
   labels:
