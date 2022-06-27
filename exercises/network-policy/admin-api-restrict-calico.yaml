@@ -1,0 +1,16 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-external
+  namespace: kong
+spec:
+  selector:
+    app == kong-kong
+  types:
+    - Ingress
+  ingress:    
+    - action: Allow
+      source:
+        nets:
+        - 192.168.0.0/16
+        - 172.24.0.0/16
