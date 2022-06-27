@@ -20,6 +20,8 @@ name: avl
 networking:
   apiServerAddress: ${KIND_HOST}
   apiServerPort: 8443
+  disableDefaultCNI: true
+  podSubnet: "192.168.0.0/16"
 nodes:
   - role: control-plane
     extraPortMappings:
@@ -59,6 +61,8 @@ EOF
 
 kind create cluster --config kind-config.yaml
 export KUBECONFIG=/home/labuser/.kube/config
+kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
 # Create k8s resources here that need to exist prior to helm
 kubectl create ns monitoring
