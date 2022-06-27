@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+CURRENTDIR=`pwd`
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes/
+
 # Disable RBAC
 cat << EOF > admin_gui_session_conf
 {
@@ -17,10 +20,11 @@ kubectl create secret generic kong-session-config -n kong \
 -o yaml | \
 kubectl apply -f -
 
-helm upgrade -f ./helm/cp-values.yaml kong kong/kong -n kong \
+helm upgrade -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=$KONG_MANAGER_URI \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
 
 watch "kubectl get pods -n kong"
+cd $CURRENTDIR

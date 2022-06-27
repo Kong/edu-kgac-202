@@ -13,12 +13,13 @@ ingressController:
           key: password
 image:
   repository: kong/kong-gateway
-  tag: "2.8-alpine"
+  tag: "2.8.1.1-alpine"
 env:
   database: "postgres"
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
+  status_listen: 0.0.0.0:8100
   portal_gui_protocol: "https"
   portal_auth: basic-auth
   portal_session_conf:
@@ -111,3 +112,6 @@ portalapi:
   type: NodePort
   ingress: 
     enabled: true
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
