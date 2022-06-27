@@ -3,6 +3,7 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: httpbin-mtls
+  namespace: default
 plugin: mtls-auth
 config:
   ca_certificates: 
@@ -41,7 +42,7 @@ spec:
   - http:
       paths:
       - path: /ip
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: httpbin
