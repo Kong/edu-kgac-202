@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 CURRENT_DIR=`pwd`
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/apps/jwt
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/jwt
 
 # Generate keypair
 rm -f ./jane
