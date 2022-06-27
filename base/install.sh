@@ -61,7 +61,7 @@ EOF
 
 kind create cluster --config kind-config.yaml
 export KUBECONFIG=/home/labuser/.kube/config
-kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
 # Create k8s resources here that need to exist prior to helm
