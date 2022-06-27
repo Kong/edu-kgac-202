@@ -13,8 +13,6 @@ spec:
     - from:
         - ipBlock:
             cidr: 172.24.0.0/16
-            except:
-              - 0.0.0.0/0
       ports:
         - protocol: TCP
           port: 30001
