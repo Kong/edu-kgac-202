@@ -12,7 +12,9 @@ spec:
   ingress:
     - from:
         - ipBlock:
-            cidr: 172.24.0.0/16
+            cidr: 0.0.0.0/0
+            except:
+              - 72.0.0.0/8
       ports:
         - protocol: TCP
           port: 30001
