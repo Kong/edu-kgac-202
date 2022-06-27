@@ -13,14 +13,14 @@ Note:  Review the script in automation/install.sh to see the kind config.  This 
 
 Examine the scripts below if you want to modify for your own environment and use.
 ```bash
-vi automation/install.sh
-vi automation/patch.sh
-# source automation/reset-kongcluster.sh
+vi base/install.sh
+vi base/patch.sh
+# source base/reset-kongcluster.sh
 ```
 
 3. Be sure the httpbin app in the cluster is running
 ```bash
-kubectl apply -f apps/httpbin.yaml
+kubectl apply -f base/httpbin.yaml
 ```
 
 4. Create a certificate
@@ -34,7 +34,7 @@ vi create-certificate.sh
 5. Create the service and route:
 ```bash
 kubectl apply -f ./httpbin-ingress.yaml
-# Test the app
+# Test the app with kongcluster being your node IP
 http get kongcluster:30000/ip
 http get kongcluster:30000/uuid
 ```
