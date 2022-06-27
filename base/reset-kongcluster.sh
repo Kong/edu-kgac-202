@@ -8,10 +8,10 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 ./base/teardown.sh
 
 # Install
-./automation/install.sh
+./base/install.sh
 
 # Patch
-./automation/patch.sh
+./base/patch.sh
 
 # Deploy Docker Containers
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
