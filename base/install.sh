@@ -66,7 +66,7 @@ kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
 # Create k8s resources here that need to exist prior to helm
 kubectl create ns monitoring
-kubectl apply -f /home/labuser/kong-course-gateway-ops-for-kubernetes/crds/coreos-crds.yaml
+#kubectl apply -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/crds/coreos-crds.yaml
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes

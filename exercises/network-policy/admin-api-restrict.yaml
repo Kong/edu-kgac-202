@@ -14,7 +14,7 @@ spec:
         - ipBlock:
             cidr: 0.0.0.0/0
             except:
-              - 172.24.0.100/24
+              - 172.24.0.0/16
       ports:
         - protocol: TCP
           port: 30001
