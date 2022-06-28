@@ -6,3 +6,5 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: kong
 username: demo@example.com
+credentials:
+  - mtls-demo
