@@ -1,21 +1,4 @@
 ---
-apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
-metadata:
-  name: httpbin-oidc
-  namespace: default
-plugin: openid-connect
-config:
-  issuer: <discovery-uri>
-  client_id:
-  - kong
-  client_secret:
-  - <client-secret>
-  response_mode: form_post
-  redirect_uri:
-  - <redirect-uri>
-  ssl_verify: false
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
