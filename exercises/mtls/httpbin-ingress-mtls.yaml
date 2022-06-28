@@ -10,24 +10,24 @@ config:
   - cce8c384-721f-4f58-85dd-50834e3e733a
   skip_consumer_lookup: true
   revocation_check_mode: "SKIP"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: httpbin-mtls
-  namespace: default
-  labels:
-    app: httpbin
-  annotations:
-    konghq.com/plugins: "httpbin-mtls"
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 80
-  selector:
-    app: httpbin
-  type: ClusterIP
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: httpbin-mtls
+#   namespace: default
+#   labels:
+#     app: httpbin
+#   annotations:
+#     konghq.com/plugins: "httpbin-mtls"
+# spec:
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: 80
+#   selector:
+#     app: httpbin
+#   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -66,6 +66,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin-mtls
+            name: httpbin
             port:
               number: 80
