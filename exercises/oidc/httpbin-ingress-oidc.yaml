@@ -1,21 +1,20 @@
 ---
-apiVersion: v1
-kind: Service
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
 metadata:
   name: httpbin-oidc
   namespace: default
-  labels:
-    app: httpbin
-  annotations:
-    konghq.com/plugins: "httpbin-oidc"
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 80
-  selector:
-    app: httpbin
-  type: ClusterIP
+plugin: openid-connect
+config:
+  issuer: <discovery-uri>
+  client_id:
+  - kong
+  client_secret:
+  - <client-secret>
+  response_mode: form_post
+  redirect_uri:
+  - <redirect-uri>
+  ssl_verify: false
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -23,7 +22,7 @@ metadata:
   name: httpbin-oidc
   namespace: default
   annotations: 
-    konghq.com/strip-path: "true"
+    konghq.com/strip-path: "false"
     konghq.com/plugins: "httpbin-oidc"
 spec:
   ingressClassName: kong
@@ -31,9 +30,9 @@ spec:
   - http:
       paths:
       - path: /uuid
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin-oidc
+            name: httpbin
             port:
               number: 80
