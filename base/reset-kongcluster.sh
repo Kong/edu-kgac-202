@@ -11,6 +11,6 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 ./base/install.sh
 
 # Patch
-./base/patch.sh
+#./base/patch.sh
 
 cd $CURRENTDIR
