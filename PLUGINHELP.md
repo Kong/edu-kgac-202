@@ -26,7 +26,7 @@ kubectl apply -f base/httpbin.yaml
 4. Create a certificate
 Note:  Examine the script and adjust the location of where the cert is being created.  We need a cert to inject into k8s to be absorbed then by the plugin CRD.
 ```bash
-cd mtls/
+cd exercises/mtls/
 vi create-certificate.sh
 ./create-certificate.sh
 ```
