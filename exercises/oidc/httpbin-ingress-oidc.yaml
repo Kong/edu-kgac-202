@@ -12,7 +12,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /uuid
+      - path: /headers
         pathType: ImplementationSpecific
         backend:
           service:
