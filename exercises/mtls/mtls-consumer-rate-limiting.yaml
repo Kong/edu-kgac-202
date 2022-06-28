@@ -16,5 +16,3 @@ metadata:
     kubernetes.io/ingress.class: kong
     konghq.com/plugins: "httpbin-rate-limiting"
 username: demo@example.com
-credentials:
-  - mtls-demo
