@@ -5,12 +5,16 @@ CURRENTDIR=`pwd`
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 
 # Teardown
-./base/teardown-cluster.sh
+./base/teardown.sh
 
 # Install
 ./base/install.sh
 
 # Patch
 ./base/patch.sh
+
+# Deploy Docker Containers
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+docker-compose up -d
 
 cd $CURRENTDIR
