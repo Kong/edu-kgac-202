@@ -25,7 +25,7 @@ proxy:
   ingress: 
     enabled: true
 enterprise:
-  enabled: false
+  enabled: true
   rbac:
     enabled: false
   smtp:
