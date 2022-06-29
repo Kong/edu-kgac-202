@@ -1,0 +1,30 @@
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-acl
+  namespace: oidc
+plugin: acl
+config:
+  whitelist: admins
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpbin-oidc
+  namespace: oidc
+  annotations: 
+    konghq.com/strip-path: "false"
+    konghq.com/plugins: "httpbin-oidc,httpbin-acl"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /headers
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 80
