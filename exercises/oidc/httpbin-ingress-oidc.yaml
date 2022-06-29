@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: httpbin-oidc
-  namespace: default
+  namespace: oidc
   annotations: 
     konghq.com/strip-path: "false"
     konghq.com/plugins: "httpbin-oidc"

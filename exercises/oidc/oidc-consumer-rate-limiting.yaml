@@ -3,7 +3,7 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: employee-rate-limiting
-  namespace: default
+  namespace: oidc
 plugin: rate-limiting
 config:
   minute: 3
@@ -13,6 +13,7 @@ apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
 metadata:
   name: employee
+  namespace: oidc
   annotations:
     kubernetes.io/ingress.class: kong
     konghq.com/plugins: "employee-rate-limiting"
