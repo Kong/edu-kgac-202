@@ -16,6 +16,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin
+            name: httpbin.default.svc.cluster.local
             port:
               number: 80
