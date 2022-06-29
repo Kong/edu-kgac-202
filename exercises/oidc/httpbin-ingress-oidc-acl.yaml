@@ -6,7 +6,8 @@ metadata:
   namespace: oidc
 plugin: acl
 config:
-  whitelist: admins
+  allow: 
+  - admins
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
