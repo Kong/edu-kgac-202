@@ -16,7 +16,7 @@ metadata:
   namespace: oidc
   annotations: 
     konghq.com/strip-path: "false"
-    konghq.com/plugins: "httpbin-oidc,httpbin-acl,httpbin-rate-limiting"
+    konghq.com/plugins: "httpbin-oidc,httpbin-rate-limiting"
 spec:
   ingressClassName: kong
   rules:
