@@ -24,17 +24,17 @@ services:
       KEYCLOAK_IMPORT: "/data/kong_realm_template.json"
       PROXY_ADDRESS_FORWARDING: "true"
 
-  smtp-server:
-    networks:
-    - kong-edu-net
-    image: reachfive/fake-smtp-server:0.8.1
-    container_name: smtp
-    hostname: smtp
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 16s
-      timeout: 16s
-      retries: 16        
-    restart: on-failure
-    ports:
-    - "1080:1080/tcp"
+  # smtp-server:
+  #   networks:
+  #   - kong-edu-net
+  #   image: reachfive/fake-smtp-server:0.8.1
+  #   container_name: smtp
+  #   hostname: smtp
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "exit 0"]
+  #     interval: 16s
+  #     timeout: 16s
+  #     retries: 16        
+  #   restart: on-failure
+  #   ports:
+  #   - "1080:1080/tcp"
