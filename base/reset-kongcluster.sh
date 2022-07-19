@@ -14,3 +14,7 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 ./base/patch.sh
 
 cd $CURRENTDIR
+
+echo ""
+echo "KONG MANAGER URL"
+echo $KONG_MANAGER_URL
