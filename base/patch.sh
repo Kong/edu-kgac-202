@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export KUBECONFIG=/home/labuser/.kube/config
 
-sed -i 's/tag: "2.2"/tag: "2.4"/g' ./base/cp-values.yaml
+sed -i 's/tag: "2.2"/tag: "2.5"/g' ./base/cp-values.yaml
 sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./base/dp-values.yaml 
 sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./base/cp-values.yaml 
 
