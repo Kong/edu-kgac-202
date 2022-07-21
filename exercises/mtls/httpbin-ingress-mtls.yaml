@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin-demo
+---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
@@ -11,23 +16,45 @@ config:
   skip_consumer_lookup: false
   revocation_check_mode: "SKIP"
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: confidential-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/uuid"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: public-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/ip"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: public-service
-  namespace: default
+  name: public-route
+  namespace: httpbin-demo
   annotations: 
-    konghq.com/strip-path: "false"
+    konghq.com/strip-path: "true"
 spec:
   ingressClassName: kong
   rules:
   - http:
       paths:
-      - path: /ip
+      - path: /public
         pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin
+            name: public-service
             port:
               number: 80
 ---
@@ -35,19 +62,19 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: confidential-route
-  namespace: default
+  namespace: httpbin-demo
   annotations: 
-    konghq.com/strip-path: "false"
+    konghq.com/strip-path: "true"
     konghq.com/plugins: "httpbin-mtls"
 spec:
   ingressClassName: kong
   rules:
   - http:
       paths:
-      - path: /uuid
+      - path: /confidential
         pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin
+            name: confidential-service
             port:
               number: 80
