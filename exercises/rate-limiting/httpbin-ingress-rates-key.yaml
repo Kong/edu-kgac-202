@@ -28,11 +28,10 @@ metadata:
   namespace: httpbin-demo
   annotations:
     konghq.com/path: "/headers"
+    konghq.com/plugins: "httpbin-auth,httpbin-rate-limiting"
 spec:
   type: ExternalName
   externalName: httpbin.default.svc.cluster.local
-  annotations:
-    konghq.com/plugins: "httpbin-auth,httpbin-rate-limiting"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
