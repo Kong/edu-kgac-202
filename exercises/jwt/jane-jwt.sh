@@ -9,18 +9,6 @@ rm -f ./jane.pem
 openssl genrsa -out ./jane.pem 2048
 openssl rsa -in ./jane.pem -outform PEM -pubout -out ./jane.pub
 
-# Create jane-consumer.yaml
-cat << EOF > jane-consumer.yaml
-apiVersion: configuration.konghq.com/v1
-kind: KongConsumer
-metadata:
-  name: jane
-  annotations:
-    kubernetes.io/ingress.class: kong
-username: jane
-EOF
-kubectl apply -f ./jane-consumer.yaml
-
 # Create jane-secret.yaml
 kubectl create secret generic jane-jwt \
   --from-literal=kongCredType=jwt  \
@@ -30,12 +18,13 @@ kubectl create secret generic jane-jwt \
   -o yaml --dry-run=client > ./jane-secret.yaml
 kubectl apply -f ./jane-secret.yaml
 
-# Update Jane Consumer
+# Create Jane Consumer with JWT creds
 cat << EOF > jane-consumer-jwt.yaml
 apiVersion: configuration.konghq.com/v1
 kind: KongConsumer
 metadata:
   name: jane
+  namespace: httpbin-demo
   annotations:
     kubernetes.io/ingress.class: kong
 username: jane
