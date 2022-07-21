@@ -8,7 +8,7 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: httpbin-mtls
-  namespace: default
+  namespace: httpbin-demo
 plugin: mtls-auth
 config:
   ca_certificates: 
