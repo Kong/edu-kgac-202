@@ -23,6 +23,7 @@ metadata:
   namespace: httpbin-demo
   annotations:
     konghq.com/path: "/uuid"
+    konghq.com/plugins: "httpbin-mtls"
 spec:
   type: ExternalName
   externalName: httpbin.default.svc.cluster.local
