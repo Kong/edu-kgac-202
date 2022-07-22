@@ -1,31 +1,48 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin-demo
+---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: httpbin-acl
-  namespace: oidc
+  namespace: httpbin-demo
 plugin: acl
 config:
   allow: 
   - admins
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oidc-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/anything"
+    konghq.com/plugins: "httpbin-oidc,httpbin-acl"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: httpbin-oidc
-  namespace: oidc
+  name: oidc-route
+  namespace: httpbin-demo
   annotations: 
-    konghq.com/strip-path: "false"
+    konghq.com/strip-path: "true"
     konghq.com/plugins: "httpbin-oidc,httpbin-acl"
 spec:
   ingressClassName: kong
   rules:
   - http:
       paths:
-      - path: /headers
+      - path: /oidc
         pathType: ImplementationSpecific
         backend:
           service:
-            name: httpbin
+            name: oidc-service
             port:
               number: 80
