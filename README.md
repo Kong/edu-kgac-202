@@ -1,29 +1,20 @@
 # Kong Course - Gateway Ops for Kubernetes
 Scripts and configs for the Gateway Ops for Kubernetes Course
 
-# Automation
+# Clone Repo and Deploy
 ```bash
 git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
-cd kong-course-gateway-ops-for-kubernetes
+source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
 ```
 
-## Install and Patch
+# Teardown
 ```bash
-source ./automation/reset-kongcluster.sh
-```
-
-## Remove Helm Releases and Delete Namespaces
-```bash
-# Remove Kong Data Plane
-helm uninstall kong-dp -n kong-dp
-
-# Remove Kong Control Plane
-helm uninstall kong -n kong
-
-# Remove Namespaces
-kubectl delete ns kong
-kubectl delete ns kong-dp
-
-# Delete kind cluster
+# Delete Kind Cluster
 kind delete cluster --name avl
+
+# Shutdown Keycloak
+CURRENTDIR=`pwd`
+cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+docker-compose down
+cd $CURRENTDIR
 ```
