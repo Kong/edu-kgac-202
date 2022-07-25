@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin-demo
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-jq
+  namespace: httpbin-demo
+  annotations:
+    kubernetes.io/ingress.class: kong
+config:
+  response_jq_program: "del(.queryString.apikey)"
+plugin: jq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/anything"
+    konghq.com/plugins: "httpbin-auth,httpbin-jq"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
