@@ -11,16 +11,6 @@ metadata:
   namespace: httpbin-demo
 plugin: key-auth
 ---
-apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
-metadata:
-  name: httpbin-rate-limiting
-  namespace:  httpbin-demo
-plugin: rate-limiting
-config:
-  minute: 16
-  policy: local
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -28,7 +18,7 @@ metadata:
   namespace: httpbin-demo
   annotations:
     konghq.com/path: "/anything"
-    konghq.com/plugins: "httpbin-auth,httpbin-rate-limiting"
+    konghq.com/plugins: "httpbin-auth"
 spec:
   type: ExternalName
   externalName: httpbin.default.svc.cluster.local
@@ -40,7 +30,7 @@ metadata:
   namespace: httpbin-demo
   annotations: 
     konghq.com/strip-path: "true"
-    konghq.com/plugins: "httpbin-auth,httpbin-rate-limiting"
+    konghq.com/plugins: "httpbin-auth"
 spec:
   ingressClassName: kong
   rules:
