@@ -13,7 +13,7 @@ metadata:
     kubernetes.io/ingress.class: kong
 config:
   functions:
-  - @transform.lua
+  - "@transform.lua"
 plugin: exit-transformer
 ---
 apiVersion: v1
