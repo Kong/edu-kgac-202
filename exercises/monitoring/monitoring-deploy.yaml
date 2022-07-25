@@ -51,8 +51,6 @@ data:
         static_configs:
           - targets: ['kong-cp:8100', 'kong-dp:8101']
 ---
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
