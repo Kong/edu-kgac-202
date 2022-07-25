@@ -4,15 +4,6 @@ kind: Namespace
 metadata:
   name: httpbin-demo
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-service
-  namespace: httpbin-demo
-spec:
-  type: ExternalName
-  externalName: redis
----
 apiVersion: configuration.konghq.com/v1
 kind: KongClusterPlugin
 metadata:
@@ -34,6 +25,6 @@ config:
   sync_rate: 0
   strategy: redis
   redis:
-    host: redis-service
+    host: redis-master.kong.svc.cluster.local
     port: 6379
 plugin: rate-limiting-advanced
