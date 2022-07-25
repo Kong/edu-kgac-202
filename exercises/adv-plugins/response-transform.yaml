@@ -17,7 +17,6 @@ config:
   add:
     json:
     - json-key-added:Test-Key
-  add:
     headers:
     - X-Kong-Test-Response-Header:MyResponseHeader
 plugin: response-transformer-advanced
