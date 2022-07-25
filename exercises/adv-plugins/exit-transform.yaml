@@ -13,7 +13,19 @@ metadata:
     kubernetes.io/ingress.class: kong
 config:
   functions:
-  - "@transform.lua"
+  - transform.lua: |
+      return function(status, body, headers)
+        if not body or not body.message then
+          return status, body, headers
+        end
+        headers = { ["X-Some-Header"] = "ETP Triggered" }
+        local new_body = {
+          error = true,
+          status = status,
+          message = body.message .. ", Achtung!",
+        }
+        return status, new_body, headers
+      end
 plugin: exit-transformer
 ---
 apiVersion: v1
