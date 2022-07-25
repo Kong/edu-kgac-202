@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin-demo
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-exit-transform
+  namespace: httpbin-demo
+  annotations:
+    kubernetes.io/ingress.class: kong
+config:
+  functions:
+  - @transform.lua
+plugin: exit-transformer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/anything"
+    konghq.com/plugins: "httpbin-auth,httpbin-jq,httpbin-exit-transform"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
