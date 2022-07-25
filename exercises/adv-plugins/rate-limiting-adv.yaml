@@ -9,10 +9,12 @@ metadata:
     global: "true"
 config:
   minute: 5
-  limit: 10
-  limit: 20
-  window_size: 60
-  window_size: 90
+  limit: 
+  - 10
+  - 20
+  window_size: 
+  - 60
+  - 90
   window_type: sliding
   sync_rate: 0
   strategy: redis
