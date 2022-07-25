@@ -1,8 +1,16 @@
 prometheus:
+  service:
+    type: NodePort
+    nodePort: 30006
   prometheusSpec:
     serviceMonitorSelectorNilUsesHelmValues: false
 grafana:
   #import Kong grafana dashboards
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 3000
+    nodePort: 30005
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
