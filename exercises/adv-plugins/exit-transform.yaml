@@ -27,6 +27,7 @@ config:
           }
           return status, new_body, headers\n
         end
+
 #  - "-- transform.lua\n    return function(status, body, headers)\n      if not body or not body.message then\n        return status, body, headers\n      end\n      headers = { [\"X-Some-Header\"] = \"ETP Triggered\" }\n      local new_body = {\n        error = true,\n        status = status,\n        message = body.message .. \", Achtung!\",\n      }\n      return status, new_body, headers\n    end"
 plugin: exit-transformer
 ---
