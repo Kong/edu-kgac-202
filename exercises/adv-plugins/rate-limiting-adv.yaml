@@ -1,0 +1,21 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongClusterPlugin
+metadata:
+  name: global-rate-limit-adv
+  namespace: httpbin-demo
+  annotations:
+    kubernetes.io/ingress.class: kong
+  labels:
+    global: "true"
+config:
+  minute: 5
+  limit: 10
+  limit: 20
+  window_size: 60
+  window_size: 90
+  window_type: sliding
+  sync_rate: 0
+  strategy: redis
+  redis.host: redis
+  redis.port: 6379
+plugin: rate-limiting-advanced
