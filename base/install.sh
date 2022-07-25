@@ -64,9 +64,12 @@ export KUBECONFIG=/home/labuser/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
-# Create k8s resources here that need to exist prior to helm
+# K8s resources, prometheus, grafana, and statsd
 kubectl create ns monitoring
-#kubectl apply -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/crds/coreos-crds.yaml
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
+helm install -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
 
 # Create Keys and Certs, Namespace, and Load into K8s
 cd /home/labuser/kong-course-gateway-ops-for-kubernetes
