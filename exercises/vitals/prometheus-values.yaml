@@ -1,0 +1,25 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+grafana:
+  #import Kong grafana dashboards
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'kong'
+          orgId: 1
+          folder: 'Kong'
+          type: file
+          disableDeletion: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/kong
+  dashboards:
+    kong:
+      kong-official:
+        gnetId: 7424
+        datasource: Prometheus
+      kong-vitals:
+        gnetId: 11870
+        datasource: Prometheus
