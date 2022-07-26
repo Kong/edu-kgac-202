@@ -4,6 +4,12 @@ image:
   repository: kong/kong-gateway
   tag: "2.7-alpine"
 env:
+  tracing: on
+  tracing_writing_strategy: file
+  tracing_types: all
+  tracing_time_threshold: 0
+  tracing_write_endpoint: /dev/stdout
+  tracing_debug_header: X-Trace
   vitals: on
   vitals_strategy: prometheus
   vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
