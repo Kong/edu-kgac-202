@@ -4,16 +4,6 @@
 cd /home/labuser
 ./setup-docker.sh
 
-# Update Grafana and Prometheus ENVs
-export PROMETHEUS_PORT=30006
-export PROMETHEUS_HOSTNAME=${PROMETHEUS_PORT}${AVL_PAIRED_CONTAINER_EXTERNAL_DOMAIN_BASE}
-export PROMETHEUS_URI=${PROMETHEUS_HOSTNAME}
-export PROMETHEUS_URL="https://${PROMETHEUS_HOSTNAME}"
-export GRAFANA_PORT=30005
-export GRAFANA_HOSTNAME=${GRAFANA_PORT}${AVL_PAIRED_CONTAINER_EXTERNAL_DOMAIN_BASE}
-export GRAFANA_URI=${GRAFANA_HOSTNAME}
-export GRAFANA_URL="https://${GRAFANA_HOSTNAME}"
-
 # Create Kind Cluster
 KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 cat << EOF > kind-config.yaml
