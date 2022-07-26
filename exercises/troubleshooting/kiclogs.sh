@@ -4,4 +4,4 @@
 CP_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
 
 # Show logs
-kubectl logs $CP_POD -n kong -c proxy
+kubectl logs $CP_POD -n kong -c ingress-controller
