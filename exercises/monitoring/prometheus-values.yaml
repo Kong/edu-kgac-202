@@ -27,7 +27,9 @@ grafana:
     kong:
       kong-official:
         gnetId: 7424
+        revision: 7
         datasource: Prometheus
       kong-vitals:
         gnetId: 11870
+        revision: 5
         datasource: Prometheus
