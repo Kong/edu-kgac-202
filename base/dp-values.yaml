@@ -12,7 +12,7 @@ env:
   role: "data_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
-  status_listen: 0.0.0.0:8101
+  status_listen: 0.0.0.0:8100
   lua_ssl_trusted_certificate: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_control_plane: "kong-kong-cluster.kong.svc.cluster.local:8005"
   cluster_telemetry_endpoint: kong-kong-clustertelemetry.kong.svc.cluster.local:8006
