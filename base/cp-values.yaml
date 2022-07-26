@@ -116,3 +116,6 @@ portalapi:
 serviceMonitor:
   enabled: true
   namespace: monitoring
+status:
+  enabled: true
+  type: ClusterIP
