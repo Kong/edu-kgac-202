@@ -1,0 +1,81 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin-demo
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-correlation
+  namespace: httpbin-demo
+config: 
+  header_name: X-Correlation-ID
+  generator: tracker
+  echo_downstream: false
+plugin: correlation-id
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: httpbin-request-transform
+  namespace: httpbin-demo
+config: 
+  add:
+    headers:
+    - X-MyCustom-Header:true
+plugin: request-transformer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin-service
+  namespace: httpbin-demo
+  annotations:
+    konghq.com/path: "/anything"
+    konghq.com/protocol: "http"
+spec:
+  type: ExternalName
+  externalName: httpbin.default.svc.cluster.local
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: correlation
+  namespace: httpbin-demo
+  annotations: 
+    konghq.com/strip-path: "true"
+    konghq.com/plugins: "httpbin-request-transform"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /httpbin
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin-service
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nocorrelation
+  namespace: httpbin-demo
+  annotations: 
+    konghq.com/strip-path: "true"
+    konghq.com/plugins: "httpbin-request-transform"
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /httpbin
+        pathType: Prefix
+        backend:
+          service:
+            name: httpbin-service
+            port:
+              number: 80

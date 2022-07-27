@@ -1,0 +1,122 @@
+ingressController:
+  enabled: true
+  installCRDs: false
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "2.5"
+  env:
+    publish_service: kong-dp/kong-kong-proxy
+    kong_admin_token:
+      valueFrom:
+        secretKeyRef:
+          name: kong-enterprise-superuser-password
+          key: password
+image:
+  repository: kong/kong-gateway
+  tag: "2.8.1.1-alpine"
+env:
+  audit_log: on
+  vitals: on
+  vitals_strategy: prometheus
+  vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
+  vitals_tsdb_address: prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+  database: "postgres"
+  role: "control_plane"
+  cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
+  cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
+  status_listen: 0.0.0.0:8100
+  portal_gui_protocol: "https"
+  portal_auth: basic-auth
+  portal_session_conf:
+    valueFrom:
+      secretKeyRef:
+        name: kong-portal-session-config
+        key: portal_session_conf
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: kong-enterprise-superuser-password
+        key: password
+  admin_gui_url:
+  admin_api_url:
+  admin_api_uri:
+  proxy_url:
+  portal_api_url:
+  portal_gui_host:
+cluster:
+  enabled: true
+  tls:
+    enabled: true
+    servicePort: 8005
+    containerPort: 8005
+clustertelemetry:
+  enabled: true
+  tls:
+    enabled: true
+    servicePort: 8006
+    containerPort: 8006
+proxy:
+  enabled: false
+admin:
+  enabled: true
+  labels:
+    enable-metrics: "true"
+  type: NodePort
+  http:
+    enabled: true
+    nodePort: 30001
+  tls:
+    enabled: false
+  ingress:
+    enabled: true
+enterprise:
+  enabled: true
+  rbac:
+    enabled: false
+  smtp:
+    enabled: false
+  license_secret: kong-enterprise-license
+  portal:
+    enabled: true
+  ingress:
+    enabled: true
+manager:
+  enabled: true
+  type: NodePort
+  http:
+    nodePort: 30002
+  tls:
+    enabled: false
+  ingress:
+    enabled: true
+secretVolumes:
+  - kong-cluster-cert
+postgresql:
+  enabled: true
+  postgresqlUsername: kong
+  postgresqlDatabase: kong
+  postgresqlPassword: kong
+portal:
+  enabled: true
+  type: NodePort
+  http:
+    enabled: true
+    nodePort: 30003
+  ingress:
+    enabled: true
+portalapi:
+  enabled: true
+  http:
+    enabled: true
+    nodePort: 30004
+  tls:
+    enabled: false
+  type: NodePort
+  ingress: 
+    enabled: true
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+status:
+  enabled: true
+  type: ClusterIP
