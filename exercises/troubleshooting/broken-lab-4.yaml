@@ -17,7 +17,7 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: httpbin-rate-limiting
-  namespace:  httpbin-demo
+  namespace: httpbin-demo
 plugin: rate-limiting
 config:
   minute: 5
@@ -30,7 +30,7 @@ metadata:
   namespace: httpbin-demo
   annotations:
     konghq.com/path: "/headers"
-    konghq.com/plugins: "httpbin-jwt,httpbin-rate-limiting"
+    konghq.com/plugins: "httpbin-rate-limiting"
 spec:
   type: ExternalName
   externalName: httpbin.default.svc.cluster.local
@@ -42,7 +42,7 @@ metadata:
   namespace: httpbin-demo
   annotations: 
     konghq.com/strip-path: "true"
-    konghq.com/plugins: "httpbin-jwt,httpbin-rate-limiting"
+    konghq.com/plugins: "httpbin-rate-limiting"
 spec:
   ingressClassName: kong
   rules:
