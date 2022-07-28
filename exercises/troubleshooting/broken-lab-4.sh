@@ -26,7 +26,7 @@ helm upgrade -f ./exercises/troubleshooting/dp-broken-values.yaml kong-dp kong/k
 
 # Deploy some configs
 kubectl apply -f ./exercises/troubleshooting/broken-lab-4.yaml
-./exercises/jwt/jane-jwt.sh
+source ./exercises/jwt/jane-jwt.sh
 
 # Change back to source directory
 cd $CURRENTDIR
