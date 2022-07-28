@@ -10,7 +10,7 @@ openssl genrsa -out ./jane.pem 2048
 openssl rsa -in ./jane.pem -outform PEM -pubout -out ./jane.pub
 
 # Create jane-secret.yaml
-kubectl create secret generic jane-jwt \
+kubectl create secret generic jane-jwt -n httpbin-demo \
   --from-literal=kongCredType=jwt  \
   --from-literal=key="jane-issuer" \
   --from-literal=algorithm=RS256 \
