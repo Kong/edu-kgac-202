@@ -25,7 +25,8 @@ helm upgrade -f ./exercises/troubleshooting/dp-broken-values.yaml kong-dp kong/k
 --set proxy.ingress.hostname=$KONG_PROXY_URI
 
 # Deploy some configs
-
+kubectl apply -f ./exercises/troubleshooting/broken-lab-4.yaml
+./exercises/jwt/jane-jwt.sh
 
 # Change back to source directory
 cd $CURRENTDIR
