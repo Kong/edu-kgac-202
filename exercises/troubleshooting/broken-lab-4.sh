@@ -21,7 +21,7 @@ helm upgrade -f ./exercises/troubleshooting/cp-broken-values.yaml kong kong/kong
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI 
 
-kubectl delete namespace httpbin-demo kong-dp
+kubectl create namespace kong-dp
 helm install -f ./exercises/troubleshooting/dp-broken-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=$KONG_PROXY_URI
 
