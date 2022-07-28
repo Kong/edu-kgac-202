@@ -45,7 +45,7 @@ metadata:
   namespace: httpbin-demo
   annotations: 
     konghq.com/strip-path: "true"
-    konghq.com/plugins: "httpbin-request-transform"
+    konghq.com/plugins: "httpbin-request-transform,httpbin-correlation"
 spec:
   ingressClassName: kong
   rules:
