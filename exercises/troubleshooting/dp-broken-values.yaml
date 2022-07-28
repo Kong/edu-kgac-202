@@ -44,6 +44,8 @@ enterprise:
     enabled: false
 manager:
   enabled: false
+secretVolumes:
+  - kong-cluster-cert
 portal:
   enabled: false
 portalapi:
