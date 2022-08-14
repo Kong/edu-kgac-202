@@ -4,7 +4,7 @@ export KUBECONFIG=$HOME/.kube/config
 # Delete kind cluster
 kind delete cluster --name kongcluster
 
-CURRENTDIR=`pwd`
+# Bring down docker containers
 cd ./docker-containers
 docker-compose down
-cd $CURRENTDIR
+cd ../

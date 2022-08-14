@@ -25,13 +25,6 @@ env:
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
   status_listen: 0.0.0.0:8100
-  portal_gui_protocol: "http"
-  portal_auth: basic-auth
-  portal_session_conf:
-    valueFrom:
-      secretKeyRef:
-        name: kong-portal-session-config
-        key: portal_session_conf
   password:
     valueFrom:
       secretKeyRef:
@@ -43,6 +36,13 @@ env:
   proxy_url: http://localhost:30000
   portal_api_url: http://localhost:30004
   portal_gui_host: localhost:30003
+  portal_gui_protocol: "http"
+  portal_auth: basic-auth
+  portal_session_conf:
+    valueFrom:
+      secretKeyRef:
+        name: kong-portal-session-config
+        key: portal_session_conf
 cluster:
   enabled: true
   tls:

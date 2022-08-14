@@ -12,8 +12,6 @@ services:
     image: jboss/keycloak:16.1.1
     container_name: keycloak
     command: -Dkeycloak.profile.feature.upload_scripts=enabled
-    volumes:
-    - /data:/data
     restart: on-failure
     ports:
     - 8080:8080
@@ -21,5 +19,5 @@ services:
       DB_VENDOR: H2
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: "/data/kong_realm_template.json"
+      KEYCLOAK_IMPORT: ${HOME}/kong-course-gateway-ops-for-kubernetes/exercises/oidc/kong_realm_template.json
       PROXY_ADDRESS_FORWARDING: "true"

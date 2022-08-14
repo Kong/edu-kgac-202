@@ -1,32 +1,5 @@
 #!/usr/bin/env bash
 
-# kong home dir
-# cd /home/kong
-
-# Clean up docker
-# docker rm -f $(docker ps -a -q)
-# docker volume rm $(docker volume ls -q)
-
-# Install kubectl
-# sudo apt-get update
-# sudo apt-get install -y ca-certificates curl
-# sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-# echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-# sudo apt-get update
-# sudo apt-get install -y kubectl
-
-# Install helm
-# curl -L https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz -o /home/kong/helm-v3.9.2-linux-amd64.tar.gz
-# tar -zxvf /home/kong/helm-v3.9.2-linux-amd64.tar.gz
-# sudo chmod +x /home/kong/linux-amd64/helm
-# sudo mv /home/kong/linux-amd64/helm /usr/local/bin/helm
-# sudo chown root:root /usr/local/bin/helm
-
-# Install kind
-# curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.14.0/kind-linux-amd64
-# chmod +x ./kind
-# sudo mv ./kind /usr/local/bin/kind
-
 # Create Kind Cluster
 #KIND_HOST=`getent hosts workstation | cut -d " " -f1 | grep 10.`
 KIND_HOST="127.0.0.1"
@@ -126,21 +99,11 @@ cat << EOF > portal_gui_session_conf
 EOF
 kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf
 
-# Add Helm Repo
+# Add Kong Helm Repo
 helm repo add kong https://charts.konghq.com
 helm repo update
 
-# Configure hosts
-# sudo echo "$KIND_HOST keycloak manager portal admin proxy proxy-api" >> /etc/hosts
-
 # Deploy Kong Control Plane
-# gsed -i "s/admin_gui_url:.*/admin_gui_url: http:\/\/localhost:30002/g" ./base/cp-values.yaml
-# gsed -i "s/admin_api_url:.*/admin_api_url: http:\/\/localhost:30001/g" ./base/cp-values.yaml
-# gsed -i "s/admin_api_uri:.*/admin_api_uri: localhost:30001/g" ./base/cp-values.yaml
-# gsed -i "s/proxy_url:.*/proxy_url: http:\/\/localhost:30000/g" ./base/cp-values.yaml
-# gsed -i "s/portal_api_url:.*/portal_api_url: http:\/\/localhost:30004/g" ./base/cp-values.yaml
-# gsed -i "s/portal_gui_host:.*/portal_gui_host: localhost/g" ./base/cp-values.yaml
-
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
