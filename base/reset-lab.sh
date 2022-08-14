@@ -1,22 +1,20 @@
 #!/usr/bin/env bash
 
 # Set KUBECONFIG
-export KUBECONFIG=/home/labuser/.kube/config
+export KUBECONFIG=$HOME/.kube/config
 
 # Update Grafana and Prometheus ENVs
 export PROMETHEUS_PORT=30006
-export PROMETHEUS_HOSTNAME=${PROMETHEUS_PORT}${AVL_PAIRED_CONTAINER_EXTERNAL_DOMAIN_BASE}
-export PROMETHEUS_URI=${PROMETHEUS_HOSTNAME}
-export PROMETHEUS_URL="https://${PROMETHEUS_HOSTNAME}"
+export PROMETHEUS_HOSTNAME=localhost
+export PROMETHEUS_URI=localhost:${PROMETHEUS_PORT}
+export PROMETHEUS_URL="https://${PROMETHEUS_URI}"
 export GRAFANA_PORT=30005
-export GRAFANA_HOSTNAME=${GRAFANA_PORT}${AVL_PAIRED_CONTAINER_EXTERNAL_DOMAIN_BASE}
-export GRAFANA_URI=${GRAFANA_HOSTNAME}
-export GRAFANA_URL="https://${GRAFANA_HOSTNAME}"
+export GRAFANA_HOSTNAME=localhost
+export GRAFANA_URI=localhost:${GRAFANA_PORT}
+export GRAFANA_URL="https://${GRAFANA_URI}"
 
 # Get Current Directory
 CURRENTDIR=`pwd`
-
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 
 # Teardown
 ./base/teardown.sh
@@ -25,10 +23,10 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 ./base/install.sh
 
 # Patch
-./base/patch.sh
+# ./base/patch.sh
 
 # Deploy Docker Containers
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+cd ./docker-containers
 docker-compose up -d
 
 # Change back to directory

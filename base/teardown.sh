@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-export KUBECONFIG=/home/labuser/.kube/config
+export KUBECONFIG=$HOME/.kube/config
 
 # Delete kind cluster
-kind delete cluster --name avl
+kind delete cluster --name kongcluster
 
 CURRENTDIR=`pwd`
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+cd ./docker-containers
 docker-compose down
 cd $CURRENTDIR

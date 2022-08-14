@@ -3,7 +3,7 @@ ingressController:
   installCRDs: false
   image:
     repository: kong/kubernetes-ingress-controller
-    tag: "2.2"
+    tag: "2.5"
   env:
     publish_service: kong-dp/kong-dp-kong-proxy
     kong_admin_token:
@@ -13,7 +13,7 @@ ingressController:
           key: password
 image:
   repository: kong/kong-gateway
-  tag: "2.7-alpine"
+  tag: "2.8.1.1-alpine"
 env:
   audit_log: on
   vitals: on
@@ -25,7 +25,7 @@ env:
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
   cluster_cert_key: "/etc/secrets/kong-cluster-cert/tls.key"
   status_listen: 0.0.0.0:8100
-  portal_gui_protocol: "https"
+  portal_gui_protocol: "http"
   portal_auth: basic-auth
   portal_session_conf:
     valueFrom:
@@ -37,12 +37,12 @@ env:
       secretKeyRef:
         name: kong-enterprise-superuser-password
         key: password
-  admin_gui_url:
-  admin_api_url:
-  admin_api_uri:
-  proxy_url:
-  portal_api_url:
-  portal_gui_host:
+  admin_gui_url: http://localhost:30002
+  admin_api_url: http://localhost:30001
+  admin_api_uri: localhost:30001
+  proxy_url: http://localhost:30000
+  portal_api_url: http://localhost:30004
+  portal_gui_host: localhost:30003
 cluster:
   enabled: true
   tls:
