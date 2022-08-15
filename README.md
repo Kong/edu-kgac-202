@@ -14,6 +14,7 @@ This branch assumes the following commands and tools are installed:
 ```bash
 cd $HOME
 git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
+git checkout localhost
 source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
 ```
 
