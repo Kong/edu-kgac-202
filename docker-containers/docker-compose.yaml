@@ -19,5 +19,5 @@ services:
       DB_VENDOR: H2
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: ${HOME}/kong-course-gateway-ops-for-kubernetes/exercises/oidc/kong_realm_template.json
+      KEYCLOAK_IMPORT: ./exercises/oidc/kong_realm_template.json
       PROXY_ADDRESS_FORWARDING: "true"
