@@ -3,6 +3,9 @@
 # Set KUBECONFIG
 export KUBECONFIG=$HOME/.kube/config
 
+# CD
+cd $HOME/kong-course-gateway-ops-for-kubernetes/
+
 # Local Environment Variables
 export KONG_PROXY_PORT=30000
 export KONG_PROXY_HOSTNAME=localhost
