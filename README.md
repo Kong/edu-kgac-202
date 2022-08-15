@@ -12,10 +12,10 @@ This branch assumes the following commands and tools are installed:
 
 # Clone Repo and Deploy
 ```bash
-cd $HOME
 git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
+cd ./kong-course-gateway-ops-for-kubernetes
 git checkout localhost
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./base/reset-lab.sh
 ```
 
 # Teardown
