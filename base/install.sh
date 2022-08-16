@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Create Kind Cluster
-#KIND_HOST=`getent hosts workstation | cut -d " " -f1 | grep 10.`
 KIND_HOST="127.0.0.1"
 cat << EOF > kind-config.yaml
 kind: Cluster
