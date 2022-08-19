@@ -54,7 +54,8 @@ EOF
 
 kind create cluster --config kind-config.yaml
 export KUBECONFIG=/home/labuser/.kube/config
-kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
+#kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
 # K8s resources, prometheus, grafana, and statsd
