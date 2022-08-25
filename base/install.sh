@@ -65,7 +65,7 @@ helm install -f ./exercises/monitoring/statsd-values.yaml statsd prometheus-comm
 helm install redis bitnami/redis -n kong --set auth.enabled=false --set replica.replicaCount=0
 
 # Create Keys and Certs, Namespace, and Load into K8s
-openssl rand -writerand .rnd
+openssl rand -out .rnd
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
   -days 1095 -subj "/CN=kong_clustering"
