@@ -108,7 +108,6 @@ kubectl create secret generic kong-enterprise-superuser-password --from-literal=
 
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=localhost \
---set portal.ingress.hostname=localhost \
 --set admin.ingress.hostname=localhost \
 --set portalapi.ingress.hostname=localhost 
 
