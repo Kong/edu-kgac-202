@@ -64,12 +64,12 @@ kubectl create namespace kong
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
-helm install -f /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
+helm install -f /home/labuser/edu-kgac-202/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
+helm install -f /home/labuser/edu-kgac-202/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
 helm install redis bitnami/redis -n kong --set auth.enabled=false --set replica.replicaCount=0
 
 # Create Keys and Certs, Namespace, and Load into K8s
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes
+cd /home/labuser/edu-kgac-202
 openssl rand -writerand .rnd
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \

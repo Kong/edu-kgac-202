@@ -2,10 +2,10 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Configure Service/Route/Plugin/Consumer
-cd ~/kong-course-gateway-ops-for-kubernetes/exercises/adv-plugins
+cd ~/edu-kgac-202/exercises/adv-plugins
 kubectl apply -f ./httpbin-ingress-jane.yaml
 
 # Task: Configure Rate Limiting Advanced Plugin

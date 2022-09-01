@@ -2,10 +2,10 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Configure Service/Route/Consumer/Plugins
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/vitals
+cd /home/labuser/edu-kgac-202/exercises/vitals
 kubectl apply -f ./httpbin-vitals.yaml
 
 # Task: Let's Create Some Traffic 
@@ -20,11 +20,11 @@ http kongcluster:30001/default/vitals/status_code_classes?interval=minutes \
     | jq .stats.cluster
 
 # Task: Inspect Kong Vitals Configuration
-cat ~/kong-course-gateway-ops-for-kubernetes/base/cp-values.yaml | grep vitals | sort | uniq
+cat ~/edu-kgac-202/base/cp-values.yaml | grep vitals | sort | uniq
 
 # Task: Inspect Prometheus/StatsD Helm Values
-cat ~/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/prometheus-values.yaml
-cat ~/kong-course-gateway-ops-for-kubernetes/exercises/monitoring/statsd-values.yaml
+cat ~/edu-kgac-202/exercises/monitoring/prometheus-values.yaml
+cat ~/edu-kgac-202/exercises/monitoring/statsd-values.yaml
 
 # Task: Get to GUI for Prometheus
 echo $PROMETHEUS_URL

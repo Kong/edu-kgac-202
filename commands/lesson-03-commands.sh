@@ -2,7 +2,7 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Create New Role my_role and add Permissions
 http post kongcluster:30001/rbac/roles name=my_role
@@ -31,7 +31,7 @@ http post kongcluster:30001/rbac/users \
 http get kongcluster:30001/rbac/users/super-admin/roles
 
 # Task: Enable RBAC, reducing default cookie_lifetime
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes
+cd /home/labuser/edu-kgac-202
 cat << EOF > admin_gui_session_conf
 {
     "cookie_name":"admin_session",

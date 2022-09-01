@@ -2,7 +2,7 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Gather :30001/ information
 http get kongcluster:30001 | jq '.' > 30001.json
@@ -16,8 +16,8 @@ jq -C '.' 30001-status.json | less -R
 kubectl describe deployment kong-kong -n kong | grep _LOG | sort | uniq
 
 # Task: Explore Error Logs
-./kong-course-gateway-ops-for-kubernetes/exercises/troubleshooting/kiclogs.sh
-./kong-course-gateway-ops-for-kubernetes/exercises/troubleshooting/dplogs.sh
+./edu-kgac-202/exercises/troubleshooting/kiclogs.sh
+./edu-kgac-202/exercises/troubleshooting/dplogs.sh
 
 # Task: Explore Startup System Log
 CP_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
@@ -27,17 +27,17 @@ kong reload --vv
 exit
 
 # Task: Use Debug Header to see used Service/Route
-kubectl apply -f ~/kong-course-gateway-ops-for-kubernetes/base/httpbin-ingress.yaml
+kubectl apply -f ~/edu-kgac-202/base/httpbin-ingress.yaml
 http -h get kongcluster:30000/httpbin Kong-Debug:1
 
 # Task: Use Granular Tracing to Log Details
-kubectl apply -f ~/kong-course-gateway-ops-for-kubernetes/exercises/vitals/httpbin-vitals.yaml
-cat ~/kong-course-gateway-ops-for-kubernetes/base/dp-values.yaml | grep tracing
+kubectl apply -f ~/edu-kgac-202/exercises/vitals/httpbin-vitals.yaml
+cat ~/edu-kgac-202/base/dp-values.yaml | grep tracing
 
 # Task: Use Granular Tracing to Log Details
 http -h get kongcluster:30000/httpbin apikey:JanePassword X-Trace:1 | head -1
 http -h get kongcluster:30000/httpbin X-Trace:1 | head -1
-~/kong-course-gateway-ops-for-kubernetes/exercises/troubleshooting/dplogs.sh
+~/edu-kgac-202/exercises/troubleshooting/dplogs.sh
 
 # Task: Explore Audit Logs
 http get kongcluster:30001/license/report
@@ -48,7 +48,7 @@ curl -svv --fail --trace-time https://api.github.com/repos/kong/kong | jq
 curl -o /dev/null --silent --show-error --write-out '\n\nlookup: %{time_namelookup}\nconnect: %{time_connect}\nappconnect: %{time_appconnect}\npretransfer: %{time_pretransfer}\nredirect: %{time_redirect}\nstarttransfer: %{time_starttransfer}\ntotal: %{time_total}\nsize: %{size_download}\n\n' 'https://api.github.com/repos/kong/kong'
 
 # Task: Broken Lab Scenario 1 - 502 Error
-cd ~/kong-course-gateway-ops-for-kubernetes/exercises/troubleshooting
+cd ~/edu-kgac-202/exercises/troubleshooting
 kubectl delete namespace httpbin-demo
 kubectl apply -f ./broken-lab-1.yaml
 http --headers get $KONG_PROXY_URI/httpbin?apikey=JanePassword | head -1

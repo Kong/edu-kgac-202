@@ -8,8 +8,8 @@ cd /home/labuser
 ./setup-docker.sh
 
 # Clone repo
-git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
-cd ./kong-course-gateway-ops-for-kubernetes
+git clone https://github.com/Kong/edu-kgac-202.git
+cd ./edu-kgac-202
 
 # Task: Create the Kind Cluster Config
 KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
@@ -61,7 +61,7 @@ EOF
 
 # Task: Deploy the Kind Cluster
 kind create cluster --config kind-config.yaml
-mv /home/labuser/kong-course-gateway-ops-for-kubernetes/.kube /home/labuser
+mv /home/labuser/edu-kgac-202/.kube /home/labuser
 export KUBECONFIG=/home/labuser/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CURRENTDIR=`pwd`
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/
+cd /home/labuser/edu-kgac-202/
 
 # Disable RBAC
 cat << EOF > admin_gui_session_conf

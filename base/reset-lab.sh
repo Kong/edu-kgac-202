@@ -16,7 +16,7 @@ export GRAFANA_URL="https://${GRAFANA_HOSTNAME}"
 # Get Current Directory
 CURRENTDIR=`pwd`
 
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes
+cd /home/labuser/edu-kgac-202
 
 # Teardown
 ./base/teardown.sh
@@ -28,7 +28,7 @@ cd /home/labuser/kong-course-gateway-ops-for-kubernetes
 ./base/patch.sh
 
 # Deploy Docker Containers
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+cd /home/labuser/edu-kgac-202/docker-containers
 docker-compose up -d
 
 # Change back to directory

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 CURRENTDIR=`pwd`
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/
+cd /home/labuser/edu-kgac-202/
 
 sed -i "s/admin_gui_url:.*/admin_gui_url: https:\/\/$KONG_MANAGER_URI/g" ./exercises/troubleshooting/cp-values-debug.yaml
 sed -i "s/admin_api_url:.*/admin_api_url: https:\/\/$KONG_ADMIN_API_URI/g" ./exercises/troubleshooting/cp-values-debug.yaml

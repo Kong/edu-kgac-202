@@ -3,8 +3,8 @@ Scripts and configs for the Gateway Ops for Kubernetes Course
 
 # Clone Repo and Deploy
 ```bash
-git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+git clone https://github.com/Kong/edu-kgac-202.git
+source ./edu-kgac-202/base/reset-lab.sh
 ```
 
 # Teardown
@@ -14,7 +14,7 @@ kind delete cluster --name avl
 
 # Shutdown Keycloak
 CURRENTDIR=`pwd`
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/docker-containers
+cd /home/labuser/edu-kgac-202/docker-containers
 docker-compose down
 cd $CURRENTDIR
 ```
