@@ -2,10 +2,10 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-201/base/reset-lab.sh
 
 # Task: Deploy an Ingress for our httpbin app
-cd ./kong-course-gateway-ops-for-kubernetes
+cd ./edu-kgac-201
 kubectl apply -f ./base/httpbin-ingress.yaml
 http --headers get $KONG_PROXY_URL/httpbin
 
@@ -21,7 +21,7 @@ kubectl apply -f ./exercises/rate-limiting/jane-consumer.yaml
    done)
 
 # Task: Reset httpbin service
-cd ~/kong-course-gateway-ops-for-kubernetes/exercises/jwt
+cd ~/edu-kgac-201/exercises/jwt
 kubectl delete ns httpbin-demo
 kubectl apply -f ../../base/httpbin-ingress.yaml
 http --headers get $KONG_PROXY_URL/httpbin
@@ -79,7 +79,7 @@ http -h get kongcluster:30000/httpbin
 http -h get kongcluster:30000/httpbin Authorization:"Bearer $JANE_TOKEN"
 
 # Task: Delete the httpbin-demo Namespace
-cd ~/kong-course-gateway-ops-for-kubernetes/exercises/mtls
+cd ~/edu-kgac-201/exercises/mtls
 kubectl delete ns httpbin-demo
 
 # Task: Create a self-signed certificate 

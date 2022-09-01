@@ -2,10 +2,10 @@
 
 # Reset lab
 cd /home/labuser
-source ./kong-course-gateway-ops-for-kubernetes/base/reset-lab.sh
+source ./edu-kgac-201/base/reset-lab.sh
 
 # Task: Add a Service to use with OIDC
-cd /home/labuser/kong-course-gateway-ops-for-kubernetes/exercises/oidc
+cd /home/labuser/edu-kgac-201/exercises/oidc
 cat << EOF > ./httpbin-oidc-plugin.yaml
 ---
 apiVersion: v1

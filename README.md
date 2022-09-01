@@ -12,8 +12,8 @@ This branch assumes the following commands and tools are installed:
 
 # Clone Repo and Deploy
 ```bash
-git clone https://github.com/Kong/kong-course-gateway-ops-for-kubernetes.git
-cd ./kong-course-gateway-ops-for-kubernetes
+git clone https://github.com/Kong/edu-kgac-201.git
+cd ./edu-kgac-201
 git checkout localhost
 source ./base/reset-lab.sh
 ```
@@ -25,7 +25,7 @@ kind delete cluster --name kongcluster
 
 # Shutdown Keycloak
 CURRENTDIR=`pwd`
-cd $HOME/kong-course-gateway-ops-for-kubernetes/docker-containers
+cd $HOME/edu-kgac-201/docker-containers
 docker-compose down
 cd $CURRENTDIR
 ```
