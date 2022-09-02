@@ -13,10 +13,10 @@ cd ./edu-kgac-202
 
 # Task: Create the Kind Cluster Config
 export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./base/kind-config.yaml
 
 # Task: Deploy the Kind Cluster
-kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
+kind create cluster --config ./base/kind-config.yaml
 mv /home/labuser/edu-kgac-202/.kube /home/labuser
 export KUBECONFIG=/home/labuser/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
@@ -100,7 +100,7 @@ http --form POST kongcluster:30001/files \
   "contents=@./exercises/apispec/jokes1OAS.yaml"
 
 # Task: Backup Gateway Config Lab
-yq -i '.kong-addr = env(KONG_PORTAL_GUI_HOST)' ./deck/deck.yaml 
+yq -i '.kong-addr = env(KONG_ADMIN_API_URL)' ./deck/deck.yaml 
 deck dump --config deck/deck.yaml --output-file deck/preupgrade.yaml
 
 # Task: Modify Helm Chart Values
