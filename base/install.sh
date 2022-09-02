@@ -5,7 +5,7 @@ cd /home/labuser
 ./setup-docker.sh
 
 # Create Kind Cluster
-KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
+export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
 
 kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
