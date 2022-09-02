@@ -12,55 +12,11 @@ git clone https://github.com/Kong/edu-kgac-202.git
 cd ./edu-kgac-202
 
 # Task: Create the Kind Cluster Config
-KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-cat << EOF > kind-config.yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-name: avl
-networking:
-  apiServerAddress: ${KIND_HOST}
-  apiServerPort: 8443
-  disableDefaultCNI: true
-  podSubnet: "192.168.0.0/16"
-nodes:
-  - role: control-plane
-    extraPortMappings:
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30000
-      containerPort: 30000
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30001
-      containerPort: 30001
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30002
-      containerPort: 30002
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30003
-      containerPort: 30003
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30004
-      containerPort: 30004
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30005
-      containerPort: 30005
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30006
-      containerPort: 30006
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30443
-      containerPort: 30443
-EOF
+export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
+yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
 
 # Task: Deploy the Kind Cluster
-kind create cluster --config kind-config.yaml
+kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
 mv /home/labuser/edu-kgac-202/.kube /home/labuser
 export KUBECONFIG=/home/labuser/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
