@@ -107,12 +107,12 @@ kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=lic
 # Task: Add Kong Helm Repo & Update, Add Values
 helm repo add kong https://charts.konghq.com
 helm repo update
-sed -i "s/admin_gui_url:.*/admin_gui_url: https:\/\/$KONG_MANAGER_URI/g" ./base/cp-values.yaml
-sed -i "s/admin_api_url:.*/admin_api_url: https:\/\/$KONG_ADMIN_API_URI/g" ./base/cp-values.yaml
-sed -i "s/admin_api_uri:.*/admin_api_uri: $KONG_ADMIN_API_URI/g" ./base/cp-values.yaml
-sed -i "s/proxy_url:.*/proxy_url: https:\/\/$KONG_PROXY_URI/g" ./base/cp-values.yaml
-sed -i "s/portal_api_url:.*/portal_api_url: https:\/\/$KONG_PORTAL_API_URI/g" ./base/cp-values.yaml
-sed -i "s/portal_gui_host:.*/portal_gui_host: $KONG_PORTAL_GUI_HOST/g" ./base/cp-values.yaml
+yq -i '.env.admin_gui_url = env(KONG_MANAGER_URL)' ./base/cp-values.yaml
+yq -i '.env.admin_api_url = env(KONG_ADMIN_API_URL)' ./base/cp-values.yaml
+yq -i '.env.admin_api_uri = env(KONG_ADMIN_API_URI)' ./base/cp-values.yaml
+yq -i '.env.proxy_url = env(KONG_PROXY_URL)' ./base/cp-values.yaml
+yq -i '.env.portal_api_url = env(KONG_PORTAL_API_URL)' ./base/cp-values.yaml
+yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
 
 # Task: Deploy Kong Control Plane with Environment Vars
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
@@ -144,13 +144,13 @@ http --form POST kongcluster:30001/files \
   "contents=@./exercises/apispec/jokes1OAS.yaml"
 
 # Task: Backup Gateway Config Lab
-sed -i "s/KONG_ADMIN_API_URI/https:\/\/$KONG_ADMIN_API_URI/g" ./deck/deck.yaml
+yq -i '.kong-addr = env(KONG_PORTAL_GUI_HOST)' ./deck/deck.yaml 
 deck dump --config deck/deck.yaml --output-file deck/preupgrade.yaml
 
 # Task: Modify Helm Chart Values
-sed -i 's/tag: "2.2"/tag: "2.5"/g' ./base/cp-values.yaml
-sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./base/dp-values.yaml 
-sed -i 's/tag: "2.7-alpine"/tag: "2.8.1.1-alpine"/g' ./base/cp-values.yaml 
+yq -i '.ingressController.image.tag = "2.5"' ./base/cp-values.yaml
+yq -i '.image.tag = "2.8.1.1-alpine"' ./base/dp-values.yaml
+yq -i '.image.tag = "2.8.1.1-alpine"' ./base/cp-values.yaml 
 
 # Task: Upgrade Data Plane
 helm upgrade -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
