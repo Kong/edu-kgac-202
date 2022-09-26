@@ -1,6 +1,6 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-name: avl
+name: multiverse
 networking:
   apiServerAddress: kind-host
   apiServerPort: 8443

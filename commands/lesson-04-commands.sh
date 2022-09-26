@@ -125,7 +125,7 @@ http --verify=no GET https://kongcluster:30443/public
 
 # Task: Configure and Test Rate Limiting
 kubectl apply -f ./mtls-consumer-rate-limiting.yaml
-(for ((i=1;i<=10;i++))
+(for ((i=1;i<=15;i++))
    do
      http -h --verify=no --cert=/home/labuser/.certificates/client.crt \
           --cert-key=/home/labuser/.certificates/client.key \

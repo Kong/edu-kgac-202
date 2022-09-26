@@ -2,7 +2,7 @@
 export KUBECONFIG=/home/labuser/.kube/config
 
 # Delete kind cluster
-kind delete cluster --name avl
+kind delete cluster --name multiverse
 
 CURRENTDIR=`pwd`
 cd /home/labuser/edu-kgac-202/docker-containers
