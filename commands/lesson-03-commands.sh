@@ -15,7 +15,7 @@ http post kongcluster:30001/rbac/roles/my_role/endpoints/ \
 http post kongcluster:30001/rbac/users name=my-super-admin user_token="my_token"
 
 # Task: Verify User and Assign Role
-http get kongcluster:30001/rbac/users/my-super-admin/roles
+http get kongcluster:30001/rbac/users/my-super-admin/role
 http post kongcluster:30001/rbac/users/my-super-admin/roles roles='my_role'
 
 # Task: Assign super-admin Role to my-super-admin
