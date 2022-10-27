@@ -10,7 +10,7 @@ source ./edu-kgac-202/base/reset-lab.sh
 # Teardown
 ```bash
 # Delete Kind Cluster
-kind delete cluster --name avl
+kind delete cluster --name multiverse
 
 # Shutdown Keycloak
 CURRENTDIR=`pwd`

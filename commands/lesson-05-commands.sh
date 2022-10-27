@@ -54,8 +54,8 @@ http -b get kongcluster:30001/plugins/$OIDC_PLUGIN_ID \
 
 # Task: Provide credentials to Kong and retrieve Access Token
 http get kongcluster:30000/oidc -a employee:test
-BEARER_TOKEN=$(http kongcluster:30000/oidc -a employee:test | jq -r '.headers.Authorization' | cut -c 7-)
-jwt -d $BEARER_TOKEN | jq
+AUTHORIZATION_INFO=$(http kongcluster:30000/oidc -a employee:test | jq -r '.headers.Authorization' | cut -c 7-)
+jwt -d $AUTHORIZATION_INFO | jq
 
 # Task: Get a token and authenticate with it
 BEARER_TOKEN=$(http -f POST $KEYCLOAK_URL/auth/realms/kong/protocol/openid-connect/token \

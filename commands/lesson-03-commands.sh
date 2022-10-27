@@ -61,6 +61,7 @@ helm upgrade -f ./exercises/rbac/cp-values-rbac.yaml kong kong/kong -n kong \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
 --set portalapi.ingress.hostname=$KONG_PORTAL_API_URI
+watch "kubectl get pods -n kong"
 
 # Task: Revert the cookie_lifetime to 36000 seconds
 sed -i "s/\"cookie_lifetime\":60/\"cookie_lifetime\":36000/g" admin_gui_session_conf
@@ -73,6 +74,7 @@ kubectl apply -f -
 
 DELETE_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
 kubectl delete pod $DELETE_POD -n kong
+watch "kubectl get pods -n kong"
 
 # Task: Verify Authentication with Admin API
 http --headers get kongcluster:30001/services
@@ -192,6 +194,7 @@ helm upgrade -f ./base/cp-values.yaml kong kong/kong -n kong \
 
 # Task: Deploy NetworkPolicy
 kubectl apply -f exercises/network-policy/admin-api-restrict.yaml
+kubectl describe networkpolicy admin-api-restrict -n kong
 
 # Task: Verify restrictions and Delete NetworkPolicy
 http $KONG_ADMIN_API_URL

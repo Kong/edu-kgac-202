@@ -10,13 +10,15 @@ cd /home/labuser
 # Clone repo
 git clone https://github.com/Kong/edu-kgac-202.git
 cd ./edu-kgac-202
+tree
 
 # Task: Create the Kind Cluster Config
 export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+cat ./base/kind-config.yaml
 
 # Task: Deploy the Kind Cluster
-kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
+kind create cluster --config ./base/kind-config.yaml
 mv /home/labuser/edu-kgac-202/.kube /home/labuser
 export KUBECONFIG=/home/labuser/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
@@ -69,6 +71,7 @@ yq -i '.env.admin_api_uri = env(KONG_ADMIN_API_URI)' ./base/cp-values.yaml
 yq -i '.env.proxy_url = env(KONG_PROXY_URL)' ./base/cp-values.yaml
 yq -i '.env.portal_api_url = env(KONG_PORTAL_API_URL)' ./base/cp-values.yaml
 yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
+yq -i '.env' ./base/cp-values.yaml
 
 # Task: Deploy Kong Control Plane with Environment Vars
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
@@ -76,10 +79,12 @@ helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
 --set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
 --set portalapi.ingress.hostname=${KONG_PORTAL_API_URI}
+watch "kubectl get pods -n kong"
 
 # Task: Deploy Kong Data Plane with Vars and Monitor
 helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=${KONG_PROXY_URI}
+watch "kubectl get pods -n kong-dp"
 
 # Task: Enable the Developer Portal
 http -f PATCH kongcluster:30001/workspaces/default \
@@ -100,24 +105,27 @@ http --form POST kongcluster:30001/files \
   "contents=@./exercises/apispec/jokes1OAS.yaml"
 
 # Task: Backup Gateway Config Lab
-yq -i '.kong-addr = env(KONG_PORTAL_GUI_HOST)' ./deck/deck.yaml 
+yq -i '.kong-addr = env(KONG_ADMIN_API_URL)' ./deck/deck.yaml  
 deck dump --config deck/deck.yaml --output-file deck/preupgrade.yaml
 
 # Task: Modify Helm Chart Values
 yq -i '.ingressController.image.tag = "2.5"' ./base/cp-values.yaml
 yq -i '.image.tag = "2.8.1.1-alpine"' ./base/dp-values.yaml
-yq -i '.image.tag = "2.8.1.1-alpine"' ./base/cp-values.yaml 
+yq -i '.image.tag = "2.8.1.1-alpine"' ./base/cp-values.yaml
+yq '.ingressController.image.tag' ./base/cp-values.yaml
+yq '.image.tag' ./base/cp-values.yaml
+yq '.image.tag' ./base/dp-values.yaml
 
 # Task: Upgrade Data Plane
 helm upgrade -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
---set proxy.ingress.hostname=$KONG_PROXY_URI
+--set proxy.ingress.hostname=$KONG_PROXY_URI --wait
 
 # Task: Upgrade Control Plane
 helm upgrade -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=$KONG_MANAGER_URI \
 --set portal.ingress.hostname=$KONG_PORTAL_GUI_HOST \
 --set admin.ingress.hostname=$KONG_ADMIN_API_URI \
---set portalapi.ingress.hostname=$KONG_PORTAL_API_URI 
+--set portalapi.ingress.hostname=$KONG_PORTAL_API_URI --wait
 
 # Task: Verify Upgraded Version
 http get $KONG_ADMIN_API_URL | jq .version

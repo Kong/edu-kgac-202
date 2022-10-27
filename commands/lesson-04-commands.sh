@@ -5,7 +5,7 @@ cd /home/labuser
 source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Deploy an Ingress for our httpbin app
-cd ./edu-kgac-202
+cd $HOME/edu-kgac-202
 kubectl apply -f ./base/httpbin-ingress.yaml
 http --headers get $KONG_PROXY_URL/httpbin
 
