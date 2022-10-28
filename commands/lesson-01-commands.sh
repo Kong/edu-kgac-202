@@ -19,7 +19,7 @@ cat ./base/kind-config.yaml
 # Task: Deploy the Kind Cluster
 kind create cluster --config ./base/kind-config.yaml
 #mv $HOME/edu-kgac-202/.kube $HOME
-export KUBECONFIG=$HOME/edu-kgac-202/.kube/config
+export KUBECONFIG=$HOME/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
