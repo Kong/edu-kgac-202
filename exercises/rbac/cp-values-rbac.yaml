@@ -3,7 +3,7 @@ ingressController:
   installCRDs: false
   image:
     repository: kong/kubernetes-ingress-controller
-    tag: "2.4"
+    tag: "2.7"
   env:
     publish_service: kong-dp/kong-dp-kong-proxy
     kong_admin_token:
@@ -12,8 +12,8 @@ ingressController:
           name: kong-enterprise-superuser-password
           key: password
 image:
-  repository: kong/kong-gateway
-  tag: "2.8.1.1-alpine"
+  repository: kong
+  tag: "2.8.1-alpine"
 env:
   audit_log: on
   vitals: on

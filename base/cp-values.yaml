@@ -12,8 +12,8 @@ ingressController:
           name: kong-enterprise-superuser-password
           key: password
 image:
-  repository: kong/kong-gateway
-  tag: "2.8.2.0-alpine"
+  repository: kong
+  tag: "2.8.1-alpine"
 env:
   audit_log: on
   vitals: on

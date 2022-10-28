@@ -1,8 +1,8 @@
 ingressController:
   enabled: false
 image:
-  repository: kong/kong-gateway
-  tag: "2.8.2.0-alpine"
+  repository: kong
+  tag: "2.8.1-alpine"
 env:
   tracing: on
   tracing_writing_strategy: file
