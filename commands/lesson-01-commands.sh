@@ -32,7 +32,7 @@ kubectl create namespace kong
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong
 
 # Task: Stage Resources and Set Password
-kubectl create secret generic kong-enterprise-license -n kong --from-file=license=$KONG_LICENSE
+#kubectl create secret generic kong-enterprise-license -n kong --from-file=license=$KONG_LICENSE
 cat << EOF > admin_gui_session_conf
 {
     "cookie_name":"admin_session",
@@ -59,7 +59,7 @@ EOF
 kubectl create secret generic kong-portal-session-config -n kong --from-file=portal_session_conf=portal_gui_session_conf
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
-kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
+#kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
 
 # Task: Add Kong Helm Repo & Update, Add Values
 helm repo add kong https://charts.konghq.com

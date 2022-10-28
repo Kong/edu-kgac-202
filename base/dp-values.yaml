@@ -35,13 +35,10 @@ proxy:
   ingress: 
     enabled: true
 enterprise:
-  enabled: true
+  enabled: false
   rbac:
     enabled: false
   smtp:
-    enabled: false
-  license_secret: kong-enterprise-license
-  portal:
     enabled: false
 manager:
   enabled: false

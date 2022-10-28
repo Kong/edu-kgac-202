@@ -25,7 +25,7 @@ openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong
 
 # Load License
-kubectl create secret generic kong-enterprise-license -n kong --from-file=license=$KONG_LICENSE
+#kubectl create secret generic kong-enterprise-license -n kong --from-file=license=$KONG_LICENSE
 
 # Create Manager Config
 cat << EOF > admin_gui_session_conf
@@ -76,7 +76,7 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 # Deploy Kong Data Plane
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
-kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
+#kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
 helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=localhost
 
