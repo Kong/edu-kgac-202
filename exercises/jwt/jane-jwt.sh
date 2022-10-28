@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 CURRENT_DIR=`pwd`
-cd /home/labuser/edu-kgac-201/exercises/jwt
+cd $HOME/edu-kgac-202/exercises/jwt
 
 # Generate keypair
 rm -f ./jane

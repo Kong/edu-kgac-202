@@ -1,37 +1,37 @@
 #!/usr/bin/env bash
 
 # Reset lab
-cd /home/labuser
-source ./edu-kgac-201/base/reset-lab.sh
+cd $HOME
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Create New Role my_role and add Permissions
-http post kongcluster:30001/rbac/roles name=my_role
-http post kongcluster:30001/rbac/roles/my_role/endpoints/ \
+http post localhost:30001/rbac/roles name=my_role
+http post localhost:30001/rbac/roles/my_role/endpoints/ \
   	endpoint=* \
   	workspace=default \
   	actions=*
 
 # Task: Create an RBAC user called 'my-super-admin'
-http post kongcluster:30001/rbac/users name=my-super-admin user_token="my_token"
+http post localhost:30001/rbac/users name=my-super-admin user_token="my_token"
 
 # Task: Verify User and Assign Role
-http get kongcluster:30001/rbac/users/my-super-admin/role
-http post kongcluster:30001/rbac/users/my-super-admin/roles roles='my_role'
+http get localhost:30001/rbac/users/my-super-admin/role
+http post localhost:30001/rbac/users/my-super-admin/roles roles='my_role'
 
 # Task: Assign super-admin Role to my-super-admin
-http post kongcluster:30001/rbac/users/my-super-admin/roles roles='super-admin'
+http post localhost:30001/rbac/users/my-super-admin/roles roles='super-admin'
 
 # Task: Verify my-super-admin Role 
-http get kongcluster:30001/rbac/users/my-super-admin/roles
+http get localhost:30001/rbac/users/my-super-admin/roles
 
 # Task: Automatically Assign Roles to RBAC user
-http post kongcluster:30001/rbac/users \
+http post localhost:30001/rbac/users \
     name=super-admin \
     user_token="super-admin"
-http get kongcluster:30001/rbac/users/super-admin/roles
+http get localhost:30001/rbac/users/super-admin/roles
 
 # Task: Enable RBAC, reducing default cookie_lifetime
-cd /home/labuser/edu-kgac-201
+cd $HOME/edu-kgac-202
 cat << EOF > admin_gui_session_conf
 {
     "cookie_name":"admin_session",
@@ -75,98 +75,98 @@ DELETE_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.ite
 kubectl delete pod $DELETE_POD -n kong
 
 # Task: Verify Authentication with Admin API
-http --headers get kongcluster:30001/services
-http --headers get kongcluster:30001/services Kong-Admin-Token:my_token
+http --headers get localhost:30001/services
+http --headers get localhost:30001/services Kong-Admin-Token:my_token
 
 # Task: Create & verify WorkspaceA & WorkspaceB
-http post kongcluster:30001/workspaces name=WorkspaceA Kong-Admin-Token:my_token
-http post kongcluster:30001/workspaces name=WorkspaceB Kong-Admin-Token:my_token
-http get kongcluster:30001/workspaces Kong-Admin-Token:my_token | jq '.data[].name'
+http post localhost:30001/workspaces name=WorkspaceA Kong-Admin-Token:my_token
+http post localhost:30001/workspaces name=WorkspaceB Kong-Admin-Token:my_token
+http get localhost:30001/workspaces Kong-Admin-Token:my_token | jq '.data[].name'
 
 # Task: Create AdminA & AdminB
-http post kongcluster:30001/WorkspaceA/rbac/users \
+http post localhost:30001/WorkspaceA/rbac/users \
     name=AdminA \
     user_token=AdminA_token \
     Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceB/rbac/users \
+http post localhost:30001/WorkspaceB/rbac/users \
     name=AdminB \
     user_token=AdminB_token \
     Kong-Admin-Token:super-admin
 
 # Task: Verify AdminA & AdminB
-http get kongcluster:30001/WorkspaceA/rbac/users Kong-Admin-Token:super-admin
-http get kongcluster:30001/WorkspaceB/rbac/users Kong-Admin-Token:super-admin
+http get localhost:30001/WorkspaceA/rbac/users Kong-Admin-Token:super-admin
+http get localhost:30001/WorkspaceB/rbac/users Kong-Admin-Token:super-admin
 
 # Task: Create an admin role & permissions for WorkspaceA
-http post kongcluster:30001/WorkspaceA/rbac/roles name=admin Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceA/rbac/roles/admin/endpoints/ \
+http post localhost:30001/WorkspaceA/rbac/roles name=admin Kong-Admin-Token:super-admin
+http post localhost:30001/WorkspaceA/rbac/roles/admin/endpoints/ \
   	endpoint=* \
   	workspace=WorkspaceA \
   	actions=* \
   	Kong-Admin-Token:super-admin
 
 # Task: Repeat admin role & permissions for WorkspaceB
-http post kongcluster:30001/WorkspaceB/rbac/roles name=admin Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceB/rbac/roles/admin/endpoints/ \
+http post localhost:30001/WorkspaceB/rbac/roles name=admin Kong-Admin-Token:super-admin
+http post localhost:30001/WorkspaceB/rbac/roles/admin/endpoints/ \
   	endpoint=* \
   	workspace=WorkspaceB \
   	actions=* \
   	Kong-Admin-Token:super-admin
 
 # Task: Assign admin role to admin user in each workspace
-http post kongcluster:30001/WorkspaceA/rbac/users/AdminA/roles/ \
+http post localhost:30001/WorkspaceA/rbac/users/AdminA/roles/ \
     roles=admin \
     Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceB/rbac/users/AdminB/roles/ \
+http post localhost:30001/WorkspaceB/rbac/users/AdminB/roles/ \
     roles=admin \
     Kong-Admin-Token:super-admin
 
 # Task: Verify AdminA/AdminB access to corresponding Workspaces
-http get kongcluster:30001/WorkspaceA/rbac/users Kong-Admin-Token:AdminA_token
-http get kongcluster:30001/WorkspaceB/rbac/users Kong-Admin-Token:AdminA_token
-http get kongcluster:30001/WorkspaceB/rbac/users Kong-Admin-Token:AdminB_token
-http get kongcluster:30001/WorkspaceA/rbac/users Kong-Admin-Token:AdminB_token
+http get localhost:30001/WorkspaceA/rbac/users Kong-Admin-Token:AdminA_token
+http get localhost:30001/WorkspaceB/rbac/users Kong-Admin-Token:AdminA_token
+http get localhost:30001/WorkspaceB/rbac/users Kong-Admin-Token:AdminB_token
+http get localhost:30001/WorkspaceA/rbac/users Kong-Admin-Token:AdminB_token
 
 # Task: Deploy a service to WorkspaceA with correct Admin
-http post kongcluster:30001/WorkspaceA/services name=httpbin_service \
+http post localhost:30001/WorkspaceA/services name=httpbin_service \
     url=http://httpbin:80 Kong-Admin-Token:AdminB_token
-http post kongcluster:30001/WorkspaceA/services name=httpbin_service \
+http post localhost:30001/WorkspaceA/services name=httpbin_service \
     url=http://httpbin:80 Kong-Admin-Token:AdminA_token
-http -f post kongcluster:30001/WorkspaceA/services/httpbin_service/routes name=httpbin \
+http -f post localhost:30001/WorkspaceA/services/httpbin_service/routes name=httpbin \
     hosts=httpbin:80 paths=/httpbin Kong-Admin-Token:AdminA_token
 
 # Task: Verify service in WorkspaceA
-http get kongcluster:30001/WorkspaceA/services Kong-Admin-Token:AdminA_token
+http get localhost:30001/WorkspaceA/services Kong-Admin-Token:AdminA_token
 
 # Task: Add TeamA_engineer & TeamB_engineer to the workspace teams
-http post kongcluster:30001/WorkspaceA/rbac/users name=TeamA_engineer user_token=teama_engineer_user_token Kong-Admin-Token:AdminB_token
-http post kongcluster:30001/WorkspaceA/rbac/users name=TeamA_engineer user_token=teama_engineer_user_token Kong-Admin-Token:AdminA_token
-http post kongcluster:30001/WorkspaceB/rbac/users name=TeamB_engineer user_token=teamb_engineer_user_token Kong-Admin-Token:AdminB_token
+http post localhost:30001/WorkspaceA/rbac/users name=TeamA_engineer user_token=teama_engineer_user_token Kong-Admin-Token:AdminB_token
+http post localhost:30001/WorkspaceA/rbac/users name=TeamA_engineer user_token=teama_engineer_user_token Kong-Admin-Token:AdminA_token
+http post localhost:30001/WorkspaceB/rbac/users name=TeamB_engineer user_token=teamb_engineer_user_token Kong-Admin-Token:AdminB_token
 
 # Task: Create read-only roles and permissions for 'Team_engineer'
-http post kongcluster:30001/WorkspaceA/rbac/roles name=engineer-role Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceB/rbac/roles name=engineer-role Kong-Admin-Token:super-admin
-http post kongcluster:30001/WorkspaceA/rbac/roles/engineer-role/endpoints/ \
+http post localhost:30001/WorkspaceA/rbac/roles name=engineer-role Kong-Admin-Token:super-admin
+http post localhost:30001/WorkspaceB/rbac/roles name=engineer-role Kong-Admin-Token:super-admin
+http post localhost:30001/WorkspaceA/rbac/roles/engineer-role/endpoints/ \
   	endpoint=* \
   	workspace=WorkspaceA \
   	actions="read" \
   	Kong-Admin-Token:AdminA_token
-http post kongcluster:30001/WorkspaceB/rbac/roles/engineer-role/endpoints/ \
+http post localhost:30001/WorkspaceB/rbac/roles/engineer-role/endpoints/ \
   	endpoint=* \
   	workspace=WorkspaceB \
   	actions="read" \
   	Kong-Admin-Token:AdminB_token
-http post kongcluster:30001/WorkspaceA/rbac/users/TeamA_engineer/roles \
+http post localhost:30001/WorkspaceA/rbac/users/TeamA_engineer/roles \
     roles=engineer-role \
     Kong-Admin-Token:AdminA_token
-http post kongcluster:30001/WorkspaceB/rbac/users/TeamB_engineer/roles \
+http post localhost:30001/WorkspaceB/rbac/users/TeamB_engineer/roles \
     roles=engineer-role \
     Kong-Admin-Token:AdminB_token
 
 # Task: Test read only access for the engineers for their workspace only
-http get kongcluster:30001/WorkspaceA/consumers Kong-Admin-Token:teama_engineer_user_token
-http post kongcluster:30001/WorkspaceA/consumers username=Jane Kong-Admin-Token:teama_engineer_user_token
-http get kongcluster:30001/WorkspaceB/consumers Kong-Admin-Token:teama_engineer_user_token
+http get localhost:30001/WorkspaceA/consumers Kong-Admin-Token:teama_engineer_user_token
+http post localhost:30001/WorkspaceA/consumers username=Jane Kong-Admin-Token:teama_engineer_user_token
+http get localhost:30001/WorkspaceB/consumers Kong-Admin-Token:teama_engineer_user_token
 
 # Task: Disable RBAC
 cat << EOF > admin_gui_session_conf
@@ -195,5 +195,5 @@ kubectl apply -f exercises/network-policy/admin-api-restrict.yaml
 
 # Task: Verify restrictions and Delete NetworkPolicy
 http $KONG_ADMIN_API_URL
-http kongcluster:30001
+http localhost:30001
 kubectl delete networkpolicy admin-api-restrict -n kong

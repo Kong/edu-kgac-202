@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Reset lab
-cd /home/labuser
-source ./edu-kgac-201/base/reset-lab.sh
+cd $HOME
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Add a Service to use with OIDC
-cd /home/labuser/edu-kgac-201/exercises/oidc
+cd $HOME/edu-kgac-202/exercises/oidc
 cat << EOF > ./httpbin-oidc-plugin.yaml
 ---
 apiVersion: v1
@@ -36,25 +36,25 @@ kubectl apply -f ./httpbin-oidc-plugin.yaml
 kubectl apply -f ./httpbin-ingress-oidc.yaml
 
 # Task: Verify Protected Service
-http get kongcluster:30000/oidc
-http get kongcluster:30000/oidc -a user:password
+http get localhost:30000/oidc
+http get localhost:30000/oidc -a user:password
 
 # Task: View Kong Discovery Information from IDP
-http get kongcluster:30001/openid-connect/issuers
-http -b get kongcluster:30001/openid-connect/issuers | jq -r .data[].issuer
+http get localhost:30001/openid-connect/issuers
+http -b get localhost:30001/openid-connect/issuers | jq -r .data[].issuer
 
 # Task: Confirm Keycloak is configured for Password Grant
 OIDC_PLUGIN_ID=$(http get \
-    kongcluster:30001/routes/httpbin-demo.oidc-route.00/plugins/ \
+    localhost:30001/routes/httpbin-demo.oidc-route.00/plugins/ \
     | jq -r '.data[] | select(.name == "openid-connect") | .id')
-http -b get kongcluster:30001/plugins/$OIDC_PLUGIN_ID \
+http -b get localhost:30001/plugins/$OIDC_PLUGIN_ID \
     | jq .config.auth_methods
-http -b get kongcluster:30001/plugins/$OIDC_PLUGIN_ID \
+http -b get localhost:30001/plugins/$OIDC_PLUGIN_ID \
     | jq .config.password_param_type
 
 # Task: Provide credentials to Kong and retrieve Access Token
-http get kongcluster:30000/oidc -a employee:test
-BEARER_TOKEN=$(http kongcluster:30000/oidc -a employee:test | jq -r '.headers.Authorization' | cut -c 7-)
+http get localhost:30000/oidc -a employee:test
+BEARER_TOKEN=$(http localhost:30000/oidc -a employee:test | jq -r '.headers.Authorization' | cut -c 7-)
 jwt -d $BEARER_TOKEN | jq
 
 # Task: Get a token and authenticate with it
@@ -65,7 +65,7 @@ BEARER_TOKEN=$(http -f POST $KEYCLOAK_URL/auth/realms/kong/protocol/openid-conne
                    username=employee \
                    password=test \
                    | jq -r .access_token)
-http get kongcluster:30000/oidc authorization:"Bearer $BEARER_TOKEN"
+http get localhost:30000/oidc authorization:"Bearer $BEARER_TOKEN"
 
 # Task: Configure a consumer & modify OIDC plugin to require preferred_username
 kubectl apply -f ./oidc-consumer.yaml
@@ -77,14 +77,14 @@ EOF
 kubectl apply -f ./httpbin-oidc-plugin-claim.yaml
 
 # Task: Verify authorization works for a user mapped to a Kong consumer
-http get kongcluster:30000/oidc -a employee:test
+http get localhost:30000/oidc -a employee:test
 
 # Task: Verify authorization is forbidden for a user not mapped to a consumer
-http get kongcluster:30000/oidc -a partner:test
+http get localhost:30000/oidc -a partner:test
 
 # Task: Add & Verify Rate Limiting
 kubectl apply -f ./oidc-consumer-rate-limiting.yaml
-for ((i=1;i<=5;i++)); do http -h GET kongcluster:30000/oidc -a employee:test; done
+for ((i=1;i<=5;i++)); do http -h GET localhost:30000/oidc -a employee:test; done
 
 # Task: Cleanup
 kubectl apply -f ./httpbin-oidc-plugin.yaml
@@ -102,7 +102,7 @@ kubectl apply -f httpbin-oidc-plugin-realm.yaml
 
 # Task: Configure the ACL plugin and whitelist access to users with the admins role
 kubectl apply -f ./httpbin-ingress-oidc-acl.yaml
-http get kongcluster:30000/oidc -a employee:test
+http get localhost:30000/oidc -a employee:test
 
 # Task: Modify the ACL plugin to require users being members of the role demo-service to access the service
 cat << EOF | kubectl apply -f -
@@ -117,7 +117,7 @@ config:
   - admins
   - demo-service
 EOF
-http GET kongcluster:30000/oidc -a employee:test
+http GET localhost:30000/oidc -a employee:test
 
 # Task: Cleanup
 kubectl delete kongplugin httpbin-oidc -n httpbin-demo
@@ -138,5 +138,5 @@ sed -i "s/minute: 3/minute: 1000/g" ./oidc-consumer-rate-limiting.yaml
 kubectl apply -f ./oidc-consumer-rate-limiting.yaml
 
 # Task: Verify Rate Limits
-for ((i=1;i<=6;i++)); do http -h GET kongcluster:30000/oidc -a partner:test; done
-for ((i=1;i<=12;i++)); do http GET kongcluster:30000/oidc -a employee:test; done
+for ((i=1;i<=6;i++)); do http -h GET localhost:30000/oidc -a partner:test; done
+for ((i=1;i<=12;i++)); do http GET localhost:30000/oidc -a employee:test; done

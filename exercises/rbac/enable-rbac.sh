@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CURRENTDIR=`pwd`
-cd /home/labuser/edu-kgac-201/
+cd $HOME/edu-kgac-202/
 
 # Enable RBAC
 cat << EOF > admin_gui_session_conf

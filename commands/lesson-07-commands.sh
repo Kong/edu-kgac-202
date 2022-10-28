@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Reset lab
-cd /home/labuser
-source ./edu-kgac-201/base/reset-lab.sh
+cd $HOME
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Configure Service/Route/Plugin/Consumer
-cd ~/edu-kgac-201/exercises/adv-plugins
+cd ~/edu-kgac-202/exercises/adv-plugins
 kubectl apply -f ./httpbin-ingress-jane.yaml
 
 # Task: Configure Rate Limiting Advanced Plugin
@@ -31,7 +31,7 @@ kubectl apply -f ./response-transform.yaml
 http get $KONG_PROXY_URI/httpbin?apikey=JanePassword
 
 # Task: Configure jq Plugin
-http -b get kongcluster:30000/httpbin?apikey=JanePassword
+http -b get localhost:30000/httpbin?apikey=JanePassword
 kubectl apply -f ./jq.yaml
 
 # Task: Create Request to See Response Body

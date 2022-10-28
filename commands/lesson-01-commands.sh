@@ -8,62 +8,18 @@ cd $HOME
 #./setup-docker.sh
 
 # Clone repo
-git clone https://github.com/Kong/edu-kgac-201.git
-cd ./edu-kgac-201
+git clone https://github.com/Kong/edu-kgac-202.git
+cd $HOME/edu-kgac-202
 git checkout localhost
 
 # Task: Create the Kind Cluster Config
-KIND_HOST="127.0.0.1"
-cat << EOF > kind-config.yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-name: kongcluster
-networking:
-  apiServerAddress: ${KIND_HOST}
-  apiServerPort: 8443
-  disableDefaultCNI: true
-  podSubnet: "192.168.0.0/16"
-nodes:
-  - role: control-plane
-    extraPortMappings:
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30000
-      containerPort: 30000
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30001
-      containerPort: 30001
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30002
-      containerPort: 30002
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30003
-      containerPort: 30003
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30004
-      containerPort: 30004
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30005
-      containerPort: 30005
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30006
-      containerPort: 30006
-    - listenAddress: "0.0.0.0"
-      protocol: TCP
-      hostPort: 30443
-      containerPort: 30443
-EOF
+# Update: Config already created in repo
+cat ./base/kind-config.yaml
 
 # Task: Deploy the Kind Cluster
-kind create cluster --config kind-config.yaml
-mv $HOME/edu-kgac-201/.kube $HOME
-export KUBECONFIG=$HOME/.kube/config
+kind create cluster --config ./base/kind-config.yaml
+#mv $HOME/edu-kgac-202/.kube $HOME
+export KUBECONFIG=$HOME/edu-kgac-202/.kube/config
 kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
 
@@ -127,7 +83,7 @@ helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=${KONG_PROXY_URI}
 
 # Task: Enable the Developer Portal
-http -f PATCH kongcluster:30001/workspaces/default \
+http -f PATCH localhost:30001/workspaces/default \
   config.portal=true
 
 # Task: Create a Developer Account
@@ -140,7 +96,7 @@ http POST $KONG_PORTAL_API_URI/default/register <<< '{"email":"myemail@example.c
 http PATCH "$KONG_ADMIN_API_URI/default/developers/myemail@example.com" <<< '{"status": 0}'
 
 # Task: Add an API Spec to test
-http --form POST kongcluster:30001/files \
+http --form POST localhost:30001/files \
   "path=specs/jokes.one.oas.yaml" \
   "contents=@./exercises/apispec/jokes1OAS.yaml"
 

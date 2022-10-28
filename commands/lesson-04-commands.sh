@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Reset lab
-cd /home/labuser
-source ./edu-kgac-201/base/reset-lab.sh
+cd $HOME
+source ./edu-kgac-202/base/reset-lab.sh
 
 # Task: Deploy an Ingress for our httpbin app
-cd ./edu-kgac-201
+cd ./edu-kgac-202
 kubectl apply -f ./base/httpbin-ingress.yaml
 http --headers get $KONG_PROXY_URL/httpbin
 
@@ -21,7 +21,7 @@ kubectl apply -f ./exercises/rate-limiting/jane-consumer.yaml
    done)
 
 # Task: Reset httpbin service
-cd ~/edu-kgac-201/exercises/jwt
+cd ~/edu-kgac-202/exercises/jwt
 kubectl delete ns httpbin-demo
 kubectl apply -f ../../base/httpbin-ingress.yaml
 http --headers get $KONG_PROXY_URL/httpbin
@@ -75,11 +75,11 @@ export JANE_TOKEN=$JANE_HEADER.$JANE_PAYLOAD.$JANE_SIG
 echo $JANE_TOKEN
 
 # Task: Consume the service with JWT credentials
-http -h get kongcluster:30000/httpbin
-http -h get kongcluster:30000/httpbin Authorization:"Bearer $JANE_TOKEN"
+http -h get localhost:30000/httpbin
+http -h get localhost:30000/httpbin Authorization:"Bearer $JANE_TOKEN"
 
 # Task: Delete the httpbin-demo Namespace
-cd ~/edu-kgac-201/exercises/mtls
+cd ~/edu-kgac-202/exercises/mtls
 kubectl delete ns httpbin-demo
 
 # Task: Create a self-signed certificate 
@@ -89,13 +89,13 @@ kubectl delete ns httpbin-demo
 kubectl apply -f ./httpbin-ingress.yaml
 
 # Task: Verify traffic is being proxied
-http --verify=no GET https://kongcluster:30443/public
-http --verify=no GET https://kongcluster:30443/confidential
+http --verify=no GET https://localhost:30443/public
+http --verify=no GET https://localhost:30443/confidential
 
 # Task: Implement the mTLS plugin to Kong
 kubectl create secret generic httpbin-mtls -n httpbin-demo \
   --from-literal=id=cce8c384-721f-4f58-85dd-50834e3e733a \
-  --from-file=cert=/home/labuser/.certificates/ca.cert.pem \
+  --from-file=cert=$HOME/.certificates/ca.cert.pem \
   -o yaml --dry-run=client > ./httpbin-mtls-secret.yaml
 kubectl apply -f ./httpbin-mtls-secret.yaml
 kubectl label secret httpbin-mtls -n httpbin-demo konghq.com/ca-cert='true'
@@ -104,31 +104,31 @@ kubectl annotate secret httpbin-mtls -n httpbin-demo \
 kubectl apply -f ./httpbin-ingress-mtls.yaml
 
 # Task: Verify access for private service without a certificate
-http --verify=no https://kongcluster:30443/confidential
+http --verify=no https://localhost:30443/confidential
 
 # Task: Create a consumer
 kubectl create secret generic mtls-consumer -n httpbin-demo \
   --from-literal=kongCredType=key-auth \
-  --from-file=key=/home/labuser/.certificates/client.key \
+  --from-file=key=$HOME/.certificates/client.key \
   -o yaml --dry-run=client > ./mtls-consumer-secret.yaml
 kubectl apply -f ./mtls-consumer-secret.yaml
 kubectl apply -f ./mtls-consumer.yaml
 
 # Task: Verify access for private service with a certificate
 http --verify=no \
-  --cert=/home/labuser/.certificates/client.crt \
-  --cert-key=/home/labuser/.certificates/client.key \
-  https://kongcluster:30443/confidential
+  --cert=$HOME/.certificates/client.crt \
+  --cert-key=$HOME/.certificates/client.key \
+  https://localhost:30443/confidential
 
 # Task: Verify public route is unaffected 
-http --verify=no GET https://kongcluster:30443/public
+http --verify=no GET https://localhost:30443/public
 
 # Task: Configure and Test Rate Limiting
 kubectl apply -f ./mtls-consumer-rate-limiting.yaml
 (for ((i=1;i<=10;i++))
    do
-     http -h --verify=no --cert=/home/labuser/.certificates/client.crt \
-          --cert-key=/home/labuser/.certificates/client.key \
-          https://kongcluster:30443/confidential \
+     http -h --verify=no --cert=$HOME/.certificates/client.crt \
+          --cert-key=$HOME/.certificates/client.key \
+          https://localhost:30443/confidential \
           | head -1
     done)

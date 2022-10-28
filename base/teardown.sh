@@ -2,7 +2,7 @@
 export KUBECONFIG=$HOME/.kube/config
 
 # Delete kind cluster
-kind delete cluster --name kongcluster
+kind delete cluster --name multiverse
 
 # Bring down docker containers
 cd ./docker-containers

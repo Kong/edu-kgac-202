@@ -2,7 +2,7 @@
 
 # Get current directory
 CURRENTDIR=`pwd`
-cd /home/labuser/edu-kgac-201/
+cd $HOME/edu-kgac-202/
 
 # Delete httpbin-demo namespace
 kubectl delete namespace httpbin-demo kong-dp

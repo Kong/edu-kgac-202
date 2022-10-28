@@ -12,8 +12,9 @@ This branch assumes the following commands and tools are installed:
 
 # Clone Repo and Deploy
 ```bash
-git clone https://github.com/Kong/edu-kgac-201.git
-cd ./edu-kgac-201
+$HOME
+git clone https://github.com/Kong/edu-kgac-202.git
+cd $HOME/edu-kgac-202
 git checkout localhost
 source ./base/reset-lab.sh
 ```
@@ -21,11 +22,11 @@ source ./base/reset-lab.sh
 # Teardown
 ```bash
 # Delete Kind Cluster
-kind delete cluster --name kongcluster
+kind delete cluster --name multiverse
 
 # Shutdown Keycloak
 CURRENTDIR=`pwd`
-cd $HOME/edu-kgac-201/docker-containers
+cd $HOME/edu-kgac-202/docker-containers
 docker-compose down
 cd $CURRENTDIR
 ```
