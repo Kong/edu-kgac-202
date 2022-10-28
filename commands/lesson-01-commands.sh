@@ -14,7 +14,7 @@ tree
 
 # Task: Create the Kind Cluster Config
 export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./base/kind-config.yaml
 cat ./base/kind-config.yaml
 
 # Task: Deploy the Kind Cluster
@@ -71,7 +71,7 @@ yq -i '.env.admin_api_uri = env(KONG_ADMIN_API_URI)' ./base/cp-values.yaml
 yq -i '.env.proxy_url = env(KONG_PROXY_URL)' ./base/cp-values.yaml
 yq -i '.env.portal_api_url = env(KONG_PORTAL_API_URL)' ./base/cp-values.yaml
 yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
-yq -i '.env' ./base/cp-values.yaml
+yq '.env' ./base/cp-values.yaml
 
 # Task: Deploy Kong Control Plane with Environment Vars
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
