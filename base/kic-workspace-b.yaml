@@ -1,0 +1,19 @@
+deployment:
+  kong:
+    enabled: false
+ingressController:
+  ingressClass: "kong-workspace-b"
+  enabled: true
+  installCRDs: false
+  image:
+    repository: kong/kubernetes-ingress-controller
+    tag: "2.7"
+  env:
+    kong_workspace: WorkspaceB
+    kong_admin_url: "http://kong-kong-admin.kong.svc.cluster.local:8001"
+    publish_service: kong-dp/kong-dp-kong-proxy
+    kong_admin_token:
+      valueFrom:
+        secretKeyRef:
+          name: kong-enterprise-superuser-password
+          key: password
