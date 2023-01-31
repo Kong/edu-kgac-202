@@ -12,10 +12,10 @@ This branch assumes the following commands and tools are installed:
 
 # Clone Repo and Deploy
 ```bash
-$HOME
+cd $HOME
 git clone https://github.com/Kong/edu-kgac-202.git
 cd $HOME/edu-kgac-202
-git checkout localhost
+git checkout strigo
 source ./base/reset-lab.sh
 ```
 
