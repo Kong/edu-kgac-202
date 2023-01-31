@@ -25,7 +25,7 @@ openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong
 
 # Load License
-kubectl create secret generic kong-enterprise-license -n kong --from-file=license=$KONG_LICENSE
+kubectl create secret generic kong-enterprise-license -n kong --from-file=license=/etc/kong/license.json
 
 # Create Manager Config
 cat << EOF > admin_gui_session_conf
@@ -46,7 +46,7 @@ cat << EOF > portal_gui_session_conf
     "cookie_samesite":"off",
     "secret":"kong",
     "cookie_secure":false,
-    "cookie_domain":"localhost",
+    "cookie_domain":"instance.autolab.strigo.io",
     "storage":"kong"
 }
 EOF
@@ -60,9 +60,9 @@ helm repo update
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
---set manager.ingress.hostname=localhost \
---set admin.ingress.hostname=localhost \
---set portalapi.ingress.hostname=localhost 
+--set manager.ingress.hostname=instance.autolab.strigo.io \
+--set admin.ingress.hostname=instance.autolab.strigo.io \
+--set portalapi.ingress.hostname=instance.autolab.strigo.io 
 
 # Wait for Kong CP Pod
 while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
@@ -76,9 +76,9 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 # Deploy Kong Data Plane
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
-kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
+kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
---set proxy.ingress.hostname=localhost
+--set proxy.ingress.hostname=instance.autolab.strigo.io
 
 # Wait for Kong DP Pods
 while [[ -z $(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
