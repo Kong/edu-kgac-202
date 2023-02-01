@@ -30,12 +30,12 @@ env:
       secretKeyRef:
         name: kong-enterprise-superuser-password
         key: password
-  admin_gui_url: http://instance.autolab.strigo.io:30002
-  admin_api_url: http://instance.autolab.strigo.io:30001
-  admin_api_uri: localhost:30001
-  proxy_url: http://instance.autolab.strigo.io:30000
-  portal_api_url: http://instance.autolab.strigo.io:30004
-  portal_gui_host: instance.autolab.strigo.io:30003
+  admin_gui_url: 
+  admin_api_url: 
+  admin_api_uri: 
+  proxy_url: 
+  portal_api_url: 
+  portal_gui_host: 
   portal_gui_protocol: "http"
   portal_auth: basic-auth
   portal_session_conf:

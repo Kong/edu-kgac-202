@@ -46,7 +46,7 @@ cat << EOF > portal_gui_session_conf
     "cookie_samesite":"off",
     "secret":"kong",
     "cookie_secure":false,
-    "cookie_domain":"instance.autolab.strigo.io",
+    "cookie_domain":".labs.strigo.io",
     "storage":"kong"
 }
 EOF
@@ -57,12 +57,19 @@ helm repo add kong https://charts.konghq.com
 helm repo update
 
 # Deploy Kong Control Plane
+yq -i '.env.admin_gui_url = env(KONG_MANAGER_URL)' ./base/cp-values.yaml
+yq -i '.env.admin_api_url = env(KONG_ADMIN_API_URL)' ./base/cp-values.yaml
+yq -i '.env.admin_api_uri = env(KONG_ADMIN_API_URI)' ./base/cp-values.yaml
+yq -i '.env.proxy_url = env(KONG_PROXY_URL)' ./base/cp-values.yaml
+yq -i '.env.portal_api_url = env(KONG_PORTAL_API_URL)' ./base/cp-values.yaml
+yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
+
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
---set manager.ingress.hostname=instance.autolab.strigo.io \
---set admin.ingress.hostname=instance.autolab.strigo.io \
---set portalapi.ingress.hostname=instance.autolab.strigo.io 
+--set manager.ingress.hostname=$STRIGO_RESOURCE_0_DNS \
+--set admin.ingress.hostname=$STRIGO_RESOURCE_0_DNS \
+--set portalapi.ingress.hostname=$STRIGO_RESOURCE_0_DNS 
 
 # Wait for Kong CP Pod
 while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
@@ -78,7 +85,7 @@ kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
 helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
---set proxy.ingress.hostname=instance.autolab.strigo.io
+--set proxy.ingress.hostname=$STRIGO_RESOURCE_0_DNS
 
 # Wait for Kong DP Pods
 while [[ -z $(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
