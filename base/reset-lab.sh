@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source /home/ubuntu/.bashrc
+
 # Set KUBECONFIG
 export KUBECONFIG=$HOME/.kube/config
 
