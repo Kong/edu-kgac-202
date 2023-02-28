@@ -15,7 +15,7 @@ image:
   repository: kong/kong-gateway
   tag: "2.7-alpine"
 env:
-  audit_log: on
+  audit_log: "on"
   vitals: on
   vitals_strategy: prometheus
   vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
@@ -37,12 +37,12 @@ env:
       secretKeyRef:
         name: kong-enterprise-superuser-password
         key: password
-  admin_gui_url:
-  admin_api_url:
-  admin_api_uri:
-  proxy_url:
-  portal_api_url:
-  portal_gui_host:
+  admin_gui_url: ${KONG_MANAGER_URL}
+  admin_api_url: ${KONG_ADMIN_API_URL}
+  admin_api_uri: ${KONG_ADMIN_API_URI}
+  proxy_url: ${KONG_PROXY_URL}
+  portal_api_url: ${KONG_PORTAL_API_URL}
+  portal_gui_host: ${KONG_PORTAL_GUI_HOST}
 cluster:
   enabled: true
   tls:
@@ -112,7 +112,7 @@ portalapi:
   tls:
     enabled: false
   type: NodePort
-  ingress: 
+  ingress:
     enabled: true
 serviceMonitor:
   enabled: true
