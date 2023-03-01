@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Pull Docker Certs
-cd /home/ubuntu
+cd /home/ubuntu/edu-kgac-202
 # ./setup-docker.sh
 
 # Create Kind Cluster
 # export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-# yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
 
-kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
+kind create cluster --config ./base/kind-config.yaml
 export KUBECONFIG=/home/ubuntu/.kube/config
 #kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/calico.yaml

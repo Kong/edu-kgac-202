@@ -2,7 +2,7 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: multiverse
 networking:
-  apiServerAddress: ${KIND_HOST}
+  apiServerAddress: kind-host
   apiServerPort: 8443
   disableDefaultCNI: true
   podSubnet: "192.168.0.0/16"
