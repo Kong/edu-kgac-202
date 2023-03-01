@@ -6,7 +6,7 @@ cd /home/ubuntu/edu-kgac-202
 
 # Create Kind Cluster
 # export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./base/kind-config.yaml
 
 kind create cluster --config ./base/kind-config.yaml
 export KUBECONFIG=/home/ubuntu/.kube/config
@@ -74,7 +74,7 @@ yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
 
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
-helm install -f ./base/cp-values.yaml kong1 kong/kong -n kong \
+helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set manager.ingress.hostname=${KONG_MANAGER_URI} \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
 --set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
