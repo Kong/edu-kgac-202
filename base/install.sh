@@ -9,6 +9,7 @@ cd /home/ubuntu/edu-kgac-202
 yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./base/kind-config.yaml
 
 kind create cluster --config ./base/kind-config.yaml
+
 export KUBECONFIG=/home/ubuntu/.kube/config
 #kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/calico.yaml
