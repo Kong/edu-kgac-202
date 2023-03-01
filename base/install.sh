@@ -75,17 +75,17 @@ yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
 helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
---set manager.ingress.hostname=${KONG_MANAGER_URI} \
---set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
---set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
---set portalapi.ingress.hostname=${KONG_PORTAL_API_URI} 
+--set manager.ingress.hostname=${KONGHOSTNAME} \
+--set portal.ingress.hostname=${KONGHOSTNAME} \
+--set admin.ingress.hostname=${KONGHOSTNAME} \
+--set portalapi.ingress.hostname=${KONGHOSTNAME} 
 
 # Wait for Kong CP Pod
 while [[ -z $(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) ]]; do
   echo "Waiting for kong control plane pod to exist..."
   sleep 1
 done
-WAIT_POD=`kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}'`
+WAIT_POD=$(kubectl get pods --selector=app=kong-kong -n kong -o jsonpath='{.items[*].metadata.name}')
 echo "Kong control plane pod exists and now waiting for it to come online..."
 kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 
