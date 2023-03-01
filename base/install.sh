@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 # Pull Docker Certs
-cd /home/labuser
-./setup-docker.sh
+cd /home/ubuntu
+# ./setup-docker.sh
 
 # Create Kind Cluster
-export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
-yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
+# export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
+# yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./edu-kgac-202/base/kind-config.yaml
 
 kind create cluster --config ./edu-kgac-202/base/kind-config.yaml
-export KUBECONFIG=/home/labuser/.kube/config
+export KUBECONFIG=/home/ubuntu/.kube/config
 #kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/calico.yaml
 kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
@@ -20,12 +20,12 @@ kubectl create namespace kong
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install -f /home/labuser/edu-kgac-202/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
-helm install -f /home/labuser/edu-kgac-202/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
+helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
+helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
 helm install redis bitnami/redis -n kong --set auth.enabled=false --set replica.replicaCount=0
 
 # Create Keys and Certs, Namespace, and Load into K8s
-cd /home/labuser/edu-kgac-202
+cd /home/ubuntu/edu-kgac-202
 openssl rand -writerand .rnd
 openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -keyout ./cluster.key -out ./cluster.crt \
@@ -74,7 +74,7 @@ yq -i '.env.portal_gui_host = env(KONG_PORTAL_GUI_HOST)' ./base/cp-values.yaml
 
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
-helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
+helm install -f ./base/cp-values.yaml kong1 kong/kong -n kong \
 --set manager.ingress.hostname=${KONG_MANAGER_URI} \
 --set portal.ingress.hostname=${KONG_PORTAL_GUI_HOST} \
 --set admin.ingress.hostname=${KONG_ADMIN_API_URI} \
