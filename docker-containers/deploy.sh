@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CURRENTDIR=`pwd`
+CURRENTDIR=$(pwd)
 
 cd /home/labuser/edu-kgac-202/docker-containers
 docker-compose up -d

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-CURRENTDIR=`pwd`
+CURRENTDIR=$(pwd)
 
-cd /home/labuser/edu-kgac-202/docker-containers
+cd /home/ubuntu/edu-kgac-202/docker-containers
 docker-compose down
 
 cd $CURRENTDIR
