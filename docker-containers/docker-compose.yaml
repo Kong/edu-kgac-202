@@ -13,7 +13,7 @@ services:
     container_name: keycloak
     command: -Dkeycloak.profile.feature.upload_scripts=enabled
     volumes:
-    - /data:/data
+    - /home/ubuntu/edu-kgac-202/base/misc:/data
     restart: on-failure
     ports:
     - 8080:8080
