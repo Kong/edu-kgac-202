@@ -8,6 +8,8 @@ cd /home/ubuntu/edu-kgac-202
 # export KIND_HOST=`getent hosts kongcluster | cut -d " " -f1`
 yq -i '.networking.apiServerAddress = env(KIND_HOST)' ./base/kind-config.yaml
 
+sleep 2
+
 kind create cluster --config ./base/kind-config.yaml
 
 export KUBECONFIG=/home/ubuntu/.kube/config

@@ -2,8 +2,8 @@
 
 until [ -f /home/ubuntu/.initcomplete ]
 do
-     sleep 2
-     echo "Waiting for vm to initialise"
+  sleep 2
+  echo "Waiting for vm to initialise"
 done
 
 # Set KUBECONFIG
