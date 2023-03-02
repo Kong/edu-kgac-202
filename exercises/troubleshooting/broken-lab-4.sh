@@ -24,7 +24,7 @@ helm upgrade -f ./exercises/troubleshooting/cp-broken-values.yaml kong kong/kong
 # Deploy Kong Data Plane
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
-kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/etc/kong/license.json
+kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=/usr/local/kong/license.json
 helm install -f ./exercises/troubleshooting/dp-broken-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=$KONG_PROXY_URI
 
