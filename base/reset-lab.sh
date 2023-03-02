@@ -4,6 +4,7 @@ until [ -f /home/ubuntu/.initcomplete ]
 do
   sleep 2
   echo "Waiting for vm to initialise"
+  snap list
 done
 
 # Set KUBECONFIG
