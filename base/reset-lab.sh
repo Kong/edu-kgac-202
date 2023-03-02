@@ -16,7 +16,7 @@ export GRAFANA_URL="https://${GRAFANA_HOSTNAME}"
 # Get Current Directory
 CURRENTDIR=$(pwd)
 
-cd /home/labuser/edu-kgac-202
+cd /home/ubuntu/edu-kgac-202
 
 # Teardown
 ./base/teardown.sh

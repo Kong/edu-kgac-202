@@ -108,3 +108,7 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
 
 # Deploy some course components
 kubectl apply -f ./base/httpbin.yaml
+
+kubectl apply -f ./base/httpbin.yaml && kubectl apply -f ./base/httpbin-ingress.yaml 
+
+http get $KONG_PROXY_URL/httpbin

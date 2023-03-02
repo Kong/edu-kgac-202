@@ -15,7 +15,7 @@ image:
   repository: kong/kong-gateway
   tag: "2.8.1.1-alpine"
 env:
-  audit_log: on
+  audit_log: "on"
   vitals: on
   vitals_strategy: prometheus
   vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
