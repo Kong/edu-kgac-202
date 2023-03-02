@@ -102,9 +102,9 @@ while [[ -z $(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpat
   echo "Waiting for kong data plane pod to exist..."
   sleep 1
 done
-WAIT_POD=$(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}')
-echo "Kong data plane pod exists and now waiting for it to come online..."
-kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
+# WAIT_POD=$(kubectl get pods --selector=app=kong-dp-kong -n kong-dp -o jsonpath='{.items[*].metadata.name}')
+# echo "Kong data plane pod exists and now waiting for it to come online..."
+# kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong-dp
 
 # Deploy some course components
 kubectl apply -f ./base/httpbin.yaml
