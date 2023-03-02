@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+until [ -f /home/ubuntu/.initcomplete ]
+do
+     sleep 2
+     echo "Waiting for vm to initialise"
+done
+
 # Set KUBECONFIG
 export KUBECONFIG=/home/ubuntu/.kube/config
 
