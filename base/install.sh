@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Pull Docker Certs
 cd /home/ubuntu/edu-kgac-202
