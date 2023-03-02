@@ -14,4 +14,4 @@ helm upgrade -f ./base/cp-values.yaml kong kong/kong -n kong \
 --set admin.ingress.hostname=$KONGHOSTNAME \
 --set portalapi.ingress.hostname=$KONGHOSTNAME 
 
-watch "kubectl get pods -A"
+# watch "kubectl get pods -A"

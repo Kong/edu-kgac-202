@@ -21,8 +21,8 @@ kubectl create namespace kong
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
-helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
+# helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/prometheus-values.yaml prometheus prometheus-community/kube-prometheus-stack -n monitoring --wait
+# helm install -f /home/ubuntu/edu-kgac-202/exercises/monitoring/statsd-values.yaml statsd prometheus-community/prometheus-statsd-exporter -n monitoring --wait
 helm install redis bitnami/redis -n kong --set auth.enabled=false --set replica.replicaCount=0
 
 # Create Keys and Certs, Namespace, and Load into K8s

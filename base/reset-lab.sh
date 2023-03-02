@@ -34,8 +34,8 @@ cd /home/ubuntu/edu-kgac-202
 ./base/patch.sh
 
 # Deploy Docker Containers
-cd /home/ubuntu/edu-kgac-202/docker-containers
-docker-compose up -d
+# cd /home/ubuntu/edu-kgac-202/docker-containers
+# docker-compose up -d
 
 # Change back to directory
 cd $CURRENTDIR
