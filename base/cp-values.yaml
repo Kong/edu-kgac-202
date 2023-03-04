@@ -17,9 +17,9 @@ image:
 env:
   audit_log: "on"
   vitals: on
-  vitals_strategy: prometheus
-  vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
-  vitals_tsdb_address: prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+  # vitals_strategy: prometheus
+  # vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
+  # vitals_tsdb_address: prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
   database: "postgres"
   role: "control_plane"
   cluster_cert: "/etc/secrets/kong-cluster-cert/tls.crt"
