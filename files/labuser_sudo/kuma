@@ -1,0 +1,3 @@
+Cmnd_Alias MVKUMA = /bin/mv kong-mesh-1.3.3/bin/kumactl /usr/local/bin/
+
+labuser ALL = (root) NOPASSWD: MVKUMA
