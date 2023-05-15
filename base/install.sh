@@ -59,7 +59,8 @@ helm repo update
 # Deploy Kong Control Plane
 kubectl create secret generic kong-enterprise-superuser-password --from-literal=password=password -n kong
 
-helm install -f ./base/cp-values.yaml kong kong/kong -n kong \
+helm install --version 2.20.2 -f ./base/cp-values.yaml kong kong/kong -n kong \
+--set env.audit_log=off \
 --set manager.ingress.hostname=localhost \
 --set admin.ingress.hostname=localhost \
 --set portalapi.ingress.hostname=localhost 
@@ -77,7 +78,7 @@ kubectl wait --for=condition=Ready --timeout=300s pod $WAIT_POD -n kong
 kubectl create namespace kong-dp
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=license=$KONG_LICENSE
-helm install -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
+helm install --version 2.20.2 -f ./base/dp-values.yaml kong-dp kong/kong -n kong-dp \
 --set proxy.ingress.hostname=localhost
 
 # Wait for Kong DP Pods

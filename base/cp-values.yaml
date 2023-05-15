@@ -3,7 +3,7 @@ ingressController:
   installCRDs: false
   image:
     repository: kong/kubernetes-ingress-controller
-    tag: "2.7"
+    tag: "2.9"
   env:
     publish_service: kong-dp/kong-dp-kong-proxy
     kong_admin_token:
@@ -13,9 +13,9 @@ ingressController:
           key: password
 image:
   repository: kong/kong-gateway
-  tag: "2.8.2.0-alpine"
+  tag: "3.2"
 env:
-  audit_log: on
+  audit_log: off
   vitals: on
   vitals_strategy: prometheus
   vitals_statsd_address: statsd-prometheus-statsd-exporter.monitoring.svc.cluster.local:9125
